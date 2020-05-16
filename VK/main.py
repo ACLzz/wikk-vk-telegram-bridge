@@ -2,7 +2,6 @@ from database.db import execute
 from vk_api import VkApi, exceptions
 from requests.exceptions import ConnectionError
 import sys
-from threading import Event
 
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -10,7 +9,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 log = logging
 
 sys.path.append('..')
-from secret import get_proxy
+from secret import get_proxy, use_proxy
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
 oauth_link = "http://cuterme.herokuapp.com/lig6r"
@@ -22,7 +21,7 @@ def login(uid, token):
     try:
         api.messages.getConversations(count=1)
     except ConnectionError:
-        log.error("Bot don't has access to vk.com")
+        log.error("Bot don't has access to VK.com")
         pass
     except exceptions.ApiError:
         return 2
@@ -33,21 +32,28 @@ def login(uid, token):
     return 0
 
 
-def get_api(uid, token=None, new=False):
+def get_api(uid, token=None, new=False, proxy=use_proxy):
     if f'{uid}' in apis and not new:
         return apis[f'{uid}']
-    if token is None:
-        token = execute(f"select token from logins where uid = {uid}")
-    session = VkApi(token=token)
 
-    proxy = get_proxy()
-    session.http.proxies = {"http": f"http://{proxy}",
-                            "https": f"https://{proxy}",
-                            "ftp": f"ftp://{proxy}"}
+    session = get_session(uid, token=token, proxy=proxy)
     api = session.get_api()
 
     apis[f'{uid}'] = api
     return api
+
+
+def get_session(uid, token=None, proxy=True):
+    if token is None:
+        token = execute(f"select token from logins where uid = {uid}")
+    session = VkApi(token=token)
+
+    if proxy:
+        proxy = get_proxy()
+        session.http.proxies = {"http": f"http://{proxy}",
+                                "https": f"https://{proxy}",
+                                "ftp": f"ftp://{proxy}"}
+    return session
 
 
 def get_conversations(uid, api=None, offset=0):

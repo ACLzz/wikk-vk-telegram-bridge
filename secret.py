@@ -4,6 +4,7 @@ from requests import get, exceptions
 secrets_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/secrets.json'
 proxies_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/http_proxies.txt'
 proxies = []
+use_proxy = False
 
 
 def get_secrets():
@@ -22,7 +23,7 @@ def get_token():
 
 
 def get_vk(opt):
-    return get_secrets()['vk'][f'{opt}']
+    return get_secrets()['VK'][f'{opt}']
 
 
 def get_db_pass(user):

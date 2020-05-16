@@ -74,6 +74,7 @@ def create_database():
 
     c = dconnect(db='soock_logins')
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
+    execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT, vchat_id INT);")
     c.close()
     print("Database created successfully")
 

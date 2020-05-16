@@ -1,6 +1,7 @@
 from database.db import execute
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from vk.main import oauth_link, login, get_api, get_conversations
+from VK.main import oauth_link, login, get_api, get_conversations
+from VK.worker import create_worker
 
 OAUTH, TOKEN = range(0, 2)
 CONV = range(1000000000, 1000000001)
@@ -44,9 +45,7 @@ def get_oauth_token(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, text='something went wrong, try again')
         return start_auth(update, context)
 
-    keyboard = [[InlineKeyboardButton('List conversations', callback_data='lst')]]
-    context.bot.send_message(chat_id=update.effective_chat.id, text='You have signed in!',
-                             reply_markup=InlineKeyboardMarkup(keyboard))
+    context.bot.send_message(chat_id=update.effective_chat.id, text='You have signed in!\nCreate new chat and add me')
 
 
 def list_convs(update, context, page=1, prev=False):
@@ -89,14 +88,24 @@ def list_convs(update, context, page=1, prev=False):
                                  reply_markup=markup)
 
 
+def start_conv(update, context, vk_chat_id):
+    uid = update.effective_user.id
+    chat_id = update.effective_chat.id
+    execute(f"insert into chats (chat_id, uid, vchat_id) values ({chat_id}, {uid}, {vk_chat_id}) "
+            "on conflict do nothing;")
+
+    create_worker(context.bot, uid)
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Good, your chat now is active, '
+                                                                    'say hello to your friend)')
+
+
 def callback(update, context):
     query = update.callback_query
     data = query.data
 
-    if data == 'lst':
-        list_convs(update, context)
-    elif str(CONV) in data:
+    if str(CONV) in data:
         conv = data[len(str(CONV)):]
+        start_conv(update, context, int(conv))
     elif 'next_page' in data:
         data = data.split(",")[1:]
         list_convs(update, context, page=int(data[0]))
