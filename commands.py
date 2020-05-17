@@ -1,6 +1,6 @@
 from database.db import execute
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from VK.main import oauth_link, login, get_api, get_conversations
+from VK.main import oauth_link, login, get_api, get_conversations, send_message
 from VK.worker import create_worker
 
 OAUTH, TOKEN = range(0, 2)
@@ -97,6 +97,14 @@ def start_conv(update, context, vk_chat_id):
     create_worker(context.bot, uid)
     context.bot.send_message(chat_id=update.effective_chat.id, text='Good, your chat now is active, '
                                                                     'say hello to your friend)')
+
+
+def send_msg(update, context):
+    uid = update.effective_user.id
+    msg = update.message.text
+    chat_id = update.effective_chat.id
+
+    send_message(uid, msg, chat_id)
 
 
 def callback(update, context):

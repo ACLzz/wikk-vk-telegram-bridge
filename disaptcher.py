@@ -4,7 +4,7 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Ca
 
 from secret import get_token
 
-from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs
+from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg
 from commands import TOKEN
 
 from database.db import execute
@@ -23,12 +23,14 @@ login_handler = ConversationHandler(entry_points=[CommandHandler('auth', start_a
                                     },
                                     fallbacks={})
 list_convs_handler = CommandHandler('lc', list_convs)
+send_msg_handler = MessageHandler(Filters.group, send_msg)
 
 
 def init_handlers():
     dp.add_handler(start_handler)
     dp.add_handler(login_handler)
     dp.add_handler(list_convs_handler)
+    dp.add_handler(send_msg_handler)
 
     dp.add_handler(callback_handler)
     dp.add_handler(unknown_handler)

@@ -2,6 +2,7 @@ from database.db import execute
 from vk_api import VkApi, exceptions
 from requests.exceptions import ConnectionError
 import sys
+from random import randint
 
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -61,3 +62,11 @@ def get_conversations(uid, api=None, offset=0):
         api = get_api(uid)
     convs = api.messages.getConversations(count=5, offset=offset)
     return convs
+
+
+def send_message(uid, msg, chat_id):
+    api = get_api(uid)
+    msg_id = randint(1, 9223372036854775700)
+    vchat_id = execute(f"select vchat_id from chats where chat_id = {chat_id}")[0][0]
+
+    api.messages.send(random_id=msg_id, message=msg, peer_id=vchat_id)
