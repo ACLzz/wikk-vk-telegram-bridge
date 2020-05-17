@@ -10,6 +10,7 @@ vk-api = "*"
 python-telegram-bot = "*"
 psycopg2 = "*"
 psutil = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"

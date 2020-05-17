@@ -14,12 +14,16 @@ log = logging
 
 def stop(signum, frame):
     log.info("Shutting down bot...")
+    # Getting every worker one by one
     for worker in workers.values():
         parent = psutil.Process(worker.pid)
-        for child in parent.children(recursive=True):  # or parent.children() for recursive=False
+        for child in parent.children(recursive=True):
+            # Joining childs of every worker
             child.join()
+        # Killing worker
         parent.kill()
     log.info("Workers stopped")
+
     updater.stop()
     log.info("Stopped.")
 

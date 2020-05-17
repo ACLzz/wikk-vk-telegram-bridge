@@ -4,16 +4,18 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Ca
 
 from secret import get_token
 
-from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg
+from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg, update_conv
 from commands import TOKEN
 
 from database.db import execute
 from VK.worker import create_worker
 
+# ####### Telegram api objects ####### #
 bot = Bot(token=get_token())
 updater = Updater(token=get_token(), use_context=True)
 dp = updater.dispatcher
 
+# ####### Handlers ####### #
 start_handler = CommandHandler('start', start)
 unknown_handler = MessageHandler(Filters.command, unknown)
 callback_handler = CallbackQueryHandler(callback)
@@ -24,12 +26,14 @@ login_handler = ConversationHandler(entry_points=[CommandHandler('auth', start_a
                                     fallbacks={})
 list_convs_handler = CommandHandler('lc', list_convs)
 send_msg_handler = MessageHandler(Filters.group, send_msg)
+update_conv_handler = CommandHandler("grp_upd", update_conv)
 
 
 def init_handlers():
     dp.add_handler(start_handler)
     dp.add_handler(login_handler)
     dp.add_handler(list_convs_handler)
+    dp.add_handler(update_conv_handler)
     dp.add_handler(send_msg_handler)
 
     dp.add_handler(callback_handler)

@@ -10,7 +10,7 @@ workers = {}
 def create_worker(bot, uid):
     if f'{uid}' in workers:
         return 0
-
+    # Create worker process
     proc = Process(target=worker, args=(bot, uid))
     workers[f'{uid}'] = proc
     proc.start()
@@ -23,7 +23,11 @@ def worker(bot, uid):
     for event in poll.listen():
         if event.type == VkEventType.MESSAGE_NEW:
             if not event.from_me:
-                chat_id = execute(f"select chat_id from chats where vchat_id = {event.peer_id};")[0][0]
-                bot.send_message(chat_id=chat_id, text=event.text)
+                try:
+                    chat_id = execute(f"select chat_id from chats where vchat_id = {event.peer_id};")[0][0]
+                    bot.send_message(chat_id=chat_id, text=event.text)
+                except IndexError:
+                    # If vk chat stream not binded to telegram group
+                    pass
 
     exit(0)

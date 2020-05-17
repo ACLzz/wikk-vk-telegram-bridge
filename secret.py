@@ -1,10 +1,13 @@
 from json import loads, dumps
 import os
 from requests import get, exceptions
+
 secrets_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/secrets.json'
 proxies_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/http_proxies.txt'
-proxies = []
+
 use_proxy = False
+proxies = []
+max_convs_per_page = 5
 
 
 def get_secrets():
