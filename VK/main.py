@@ -112,6 +112,18 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
             photo_file.close()
             remove(file_name)
 
+        if voice:
+            voice_file = voice.get_file().download()
+            voice_file = open(voice_file, 'rb')
+            file_name = voice_file.name
+
+            upload_response = uploader.audio_message(audio=voice_file, peer_id=vchat_id)
+            audio = upload_response['audio_message']
+            attachments.append(f"audio_message{audio['owner_id']}_{audio['id']}")
+
+            voice_file.close()
+            remove(file_name)
+
         attachments = ','.join(attachments)
 
     if msg is not None:

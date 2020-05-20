@@ -67,11 +67,16 @@ class Worker:
 
                 if self.event_t == VkEventType.USER_OFFLINE:
                     self.user_online(False)
+
+                self.cleaner()
         exit(0)
 
     def event_process(self):
         self.good_event = not self.event.from_me and self.event.type not in self.restricted_events
         self.event_t = self.event.type
+
+        if self.event_t == VkEventType.USER_ONLINE or self.event_t == VkEventType.USER_OFFLINE:
+            self.chat_id = get_chat_id(self.event.user_id)
 
         if self.event_t == VkEventType.MESSAGE_NEW:
             self.chat_id = get_chat_id(self.event.user_id)
@@ -132,6 +137,14 @@ class Worker:
 
     def user_typing(self):
         self.bot.send_chat_action(chat_id=self.chat_id, action=ChatAction.TYPING)
+
+    def cleaner(self):
+        self.chat_id = None
+        self.message_id = None
+        self.attchs = []
+        self.attchs_count = 0
+        self.attchs_types = []
+        self.cont_attchs = False
 
 
 def get_chat_id(vk_chat_id):
