@@ -17,6 +17,7 @@ def gen_password(length=25):
     all_chars.extend(ascii_letters)
     all_chars.extend(punctuation)
     all_chars.remove("'")
+    all_chars.remove("/")
 
     password = ''.join(str(choice(all_chars)) for i in range(length))
 

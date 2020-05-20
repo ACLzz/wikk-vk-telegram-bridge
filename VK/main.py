@@ -1,4 +1,4 @@
-from vk_api import VkApi, exceptions
+from vk_api import VkApi, exceptions, VkUpload
 
 from requests.exceptions import ConnectionError
 
@@ -7,6 +7,7 @@ from secret import max_convs_per_page
 
 import sys
 from random import randint
+from os import remove
 
 
 import logging
@@ -80,9 +81,10 @@ def get_conversations(uid, api=None, offset=0):
     return convs
 
 
-def send_message(uid, msg, chat_id):
+def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None):
     try:
-        api = get_api(uid)
+        session = get_session(uid, proxy=False)
+        api = get_api(uid, proxy=False)
     except IndexError:
         return 0
 
@@ -94,7 +96,30 @@ def send_message(uid, msg, chat_id):
         # If telegram group not binded to vk chat stream
         return
 
-    api.messages.send(random_id=msg_id, message=msg, peer_id=vchat_id)
+    attachments = []
+    if photo or documents or audio or voice:
+        uploader = VkUpload(session)
+
+        if photo:
+            photo_file = photo.get_file().download()
+            photo_file = open(photo_file, 'rb')
+            file_name = photo_file.name
+
+            upload_response = uploader.photo_messages(photos=photo_file, peer_id=vchat_id)
+            for file in upload_response:
+                attachments.append(f"photo{file['owner_id']}_{file['id']}")
+
+            photo_file.close()
+            remove(file_name)
+
+        attachments = ','.join(attachments)
+
+    if msg is not None:
+        api.messages.send(random_id=msg_id, message=msg, peer_id=vchat_id, attachment=attachments)
+    else:
+        api.messages.send(random_id=msg_id, peer_id=vchat_id, attachment=attachments)
+
+    api.account.setOffline()
 
 
 def get_vk_info(uid, vk_chat_id, fields=None):

@@ -129,17 +129,23 @@ def update_conv(update, context):
 
     vk_chat_id = execute(f"select vchat_id from chats where chat_id = {chat_id}")[0][0]
     try:
-        update_group_info(uid, context, vk_chat_id, chat_id)
+        update_group_info(uid, update, context, vk_chat_id, chat_id)
     except BadRequest:
         # If bot isn't group administrator
         context.bot.send_message(chat_id=update.effective_chat.id, text='Make bot administrator to get all features. '
                                                                         'And then try /grp_upd')
 
 
-def update_group_info(uid, context, vk_chat_id, chat_id):
+def update_group_info(uid, update, context, vk_chat_id, chat_id):
     if vk_chat_id > 0:
-        user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200'])
+        user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
+
         title = f"{user['first_name']} {user['last_name']}"
+        if user['online']:
+            title += "🌕"
+        else:
+            title += "🌑"
+
         photo_url = user['photo_200']
         description = user['status']
     else:
@@ -149,17 +155,8 @@ def update_group_info(uid, context, vk_chat_id, chat_id):
         description = f"{group['status']}\n\n{group['description']}"
 
     change_group_photo(context, chat_id, photo_url)
-    try:
-        context.bot.set_chat_title(chat_id=chat_id, title=title)
-    except BadRequest:
-        # If title the same
-        pass
-
-    try:
-        context.bot.set_chat_description(chat_id=chat_id, description=description)
-    except BadRequest:
-        # If description the same
-        pass
+    change_group_title(context, chat_id, title)
+    change_group_description(context, chat_id, description)
 
 
 def change_group_photo(context, chat_id, photo_url):
@@ -178,12 +175,43 @@ def change_group_photo(context, chat_id, photo_url):
     remove(filename)
 
 
+def change_group_title(context, chat_id, title):
+    try:
+        context.bot.set_chat_title(chat_id=chat_id, title=title)
+    except BadRequest:
+        # If title the same
+        return
+
+
+def change_group_description(context, chat_id, description):
+    try:
+        context.bot.set_chat_description(chat_id=chat_id, description=description)
+    except BadRequest:
+        # If description the same
+        return
+
+
+def service_msg_cleaner(update, context):
+    message_id = update.effective_message.message_id
+    chat_id = update.effective_chat.id
+    context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
+
+
 def send_msg(update, context):
     uid = update.effective_user.id
     msg = update.message.text
+    photo = update.message.photo
+    documents = update.message.document
+    audio = update.message.audio
+    voice = update.message.voice
     chat_id = update.effective_chat.id
 
-    send_message(uid, msg, chat_id)
+    if msg is None:
+        msg = update.message.caption
+    if photo:
+        photo = photo[-1]
+
+    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents, audio=audio, voice=voice)
 
 
 def callback(update, context):
