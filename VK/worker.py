@@ -30,6 +30,7 @@ def _create_worker(bot, uid):
 class Worker:
     def __init__(self, bot, uid):
         self.bot = bot
+        self.uid = uid
         self.session = get_session(uid, proxy=use_proxy)
         self.api = self.session.get_api()
         self.poll = VkLongPoll(self.session, mode=2)
@@ -39,14 +40,14 @@ class Worker:
     restricted_events = [VkEventType.MESSAGES_COUNTER_UPDATE]
     good_event = False
     event = None
-    event_t = None          # Event type
+    event_t = None  # Event type
 
     chat_id = None
     message_id = None
     attchs = []
     attchs_count = 0
     attchs_types = []
-    cont_attchs = False     # Bool if containing attachments
+    cont_attchs = False  # Bool if containing attachments
 
     def start(self):
         for self.event in self.poll.listen():
@@ -75,11 +76,17 @@ class Worker:
         self.good_event = not self.event.from_me and self.event.type not in self.restricted_events
         self.event_t = self.event.type
 
-        if self.event_t == VkEventType.USER_ONLINE or self.event_t == VkEventType.USER_OFFLINE:
+        if self.event_t == VkEventType.USER_ONLINE or self.event_t == VkEventType.USER_OFFLINE \
+                or self.event_t == VkEventType.USER_TYPING:
             self.chat_id = get_chat_id(self.event.user_id)
 
         if self.event_t == VkEventType.MESSAGE_NEW:
-            self.chat_id = get_chat_id(self.event.user_id)
+            if self.event.from_group:
+                vid = self.event.group_id * (-1)
+            else:
+                vid = self.event.user_id
+
+            self.chat_id = get_chat_id(vid)
             attchs = self.event.attachments.values()
             self.message_id = self.event.message_id
 
@@ -139,11 +146,12 @@ class Worker:
         self.bot.send_chat_action(chat_id=self.chat_id, action=ChatAction.TYPING)
 
     def cleaner(self):
+        self.good_event = False
         self.chat_id = None
         self.message_id = None
-        self.attchs = []
+        self.attchs.clear()
         self.attchs_count = 0
-        self.attchs_types = []
+        self.attchs_types.clear()
         self.cont_attchs = False
 
 
@@ -154,3 +162,9 @@ def get_chat_id(vk_chat_id):
     except IndexError:
         # If vk chat stream not binded to telegram group
         return 0
+
+
+def alarm(signum, frame):
+    print("ALARM!!!")
+    with open("1111111111111111111111111111111111111111111111111111", "w") as f:
+        f.write("ALARM!!!")

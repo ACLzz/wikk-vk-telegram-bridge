@@ -6,7 +6,7 @@ from telegram.error import BadRequest
 
 from VK.main import oauth_link, login, get_api, get_conversations, send_message, get_vk_info
 from VK.worker import create_worker
-from secret import max_convs_per_page
+from secret import max_convs_per_page, use_proxy
 
 from requests import get
 from psycopg2 import errors
@@ -64,7 +64,7 @@ def get_oauth_token(update, context):
 
 def list_convs(update, context, page=1, prev=False):
     uid = update.effective_user.id
-    api = get_api(uid)
+    api = get_api(uid, proxy=use_proxy)
     offset = (page-1)*max_convs_per_page
     keyboard = []
 
@@ -212,6 +212,12 @@ def send_msg(update, context):
         photo = photo[-1]
 
     send_message(uid, chat_id, msg=msg, photo=photo, documents=documents, audio=audio, voice=voice)
+
+
+def new_chat(update, context):
+    greeting = "You need to make me admin, i can update info about your friends and change their online status.\n\n" \
+               "After you've made me admin, type /lc for list conversations and choose conversation with your friend."
+    context.bot.deleteMessage(chat_id=update.effective_chat.id, message_id=greeting)
 
 
 def callback(update, context):

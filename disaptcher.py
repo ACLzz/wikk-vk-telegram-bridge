@@ -5,7 +5,7 @@ from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, Ca
 from secret import get_token
 
 from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg, update_conv, \
-    service_msg_cleaner
+    service_msg_cleaner, new_chat
 from commands import TOKEN
 
 from database.db import execute
@@ -46,6 +46,6 @@ def init_handlers():
 
 
 def init_workers():
-    conversations = execute("select uid from chats;")
+    conversations = execute("select distinct uid from chats;")
     for uid in conversations:
         create_worker(bot, uid[0])

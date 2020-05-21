@@ -24,7 +24,7 @@ apis = {}
 
 
 def login(uid, token):
-    api = get_api(uid, token, new=True)
+    api = get_api(uid, token, new=True, proxy=use_proxy)
     try:
         # Check for successful login
         api.messages.getConversations(count=1)
@@ -76,15 +76,15 @@ def get_session(uid, token=None, proxy=True):
 
 def get_conversations(uid, api=None, offset=0):
     if api is None:
-        api = get_api(uid)
+        api = get_api(uid, proxy=use_proxy)
     convs = api.messages.getConversations(count=max_convs_per_page, offset=offset)
     return convs
 
 
 def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None):
     try:
-        session = get_session(uid, proxy=False)
-        api = get_api(uid, proxy=False)
+        session = get_session(uid, proxy=use_proxy)
+        api = get_api(uid, proxy=use_proxy)
     except IndexError:
         return 0
 
@@ -135,7 +135,7 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
 
 
 def get_vk_info(uid, vk_chat_id, fields=None):
-    api = get_api(uid)
+    api = get_api(uid, proxy=use_proxy)
 
     if vk_chat_id > 0:
         # If chat with user
