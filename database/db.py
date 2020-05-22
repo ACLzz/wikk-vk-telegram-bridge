@@ -29,3 +29,15 @@ def execute(query, c=None):
         resp = None
     cur.close()
     return resp
+
+
+def get_token(uid):
+    c = conn()
+    cur = c.cursor()
+    cur.execute(f'select token from logins where uid = {uid}')
+    try:
+        resp = cur.fetchone()
+    except errors.ProgrammingError:
+        resp = None
+    cur.close()
+    return resp

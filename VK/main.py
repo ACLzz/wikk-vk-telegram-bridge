@@ -19,12 +19,12 @@ sys.path.append('..')
 from secret import get_proxy, use_proxy
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
-oauth_link = "http://cuterme.herokuapp.com/lig6r"
+oauth_link = "http://cuterme.herokuapp.com/4nvL6"
 apis = {}
 
 
 def login(uid, token):
-    api = get_api(uid, token, new=True, proxy=use_proxy)
+    api = get_api(uid, token, new=True)
     try:
         # Check for successful login
         api.messages.getConversations(count=1)
@@ -43,19 +43,19 @@ def login(uid, token):
     return 0
 
 
-def get_api(uid, token=None, new=False, proxy=use_proxy):
+def get_api(uid, token=None, new=False):
     # Search for api object already in memory
     if f'{uid}' in apis and not new:
         return apis[f'{uid}']
 
-    session = get_session(uid, token=token, proxy=proxy)
+    session = get_session(uid, token=token)
     api = session.get_api()
 
     apis[f'{uid}'] = api
     return api
 
 
-def get_session(uid, token=None, proxy=True):
+def get_session(uid, token=None):
     if token is None:
         token = execute(f"select token from logins where uid = {uid}")
 
@@ -63,9 +63,9 @@ def get_session(uid, token=None, proxy=True):
         # If user not authenticated
         raise IndexError
 
-    session = VkApi(token=token)
+    session = VkApi(token=token, api_version='5.103')
 
-    if proxy:
+    if use_proxy:
         # Add proxy if proxy enabled
         proxy = get_proxy()
         session.http.proxies = {"http": f"http://{proxy}",
@@ -76,15 +76,15 @@ def get_session(uid, token=None, proxy=True):
 
 def get_conversations(uid, api=None, offset=0):
     if api is None:
-        api = get_api(uid, proxy=use_proxy)
+        api = get_api(uid)
     convs = api.messages.getConversations(count=max_convs_per_page, offset=offset)
     return convs
 
 
-def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None):
+def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None, video=None):
     try:
-        session = get_session(uid, proxy=use_proxy)
-        api = get_api(uid, proxy=use_proxy)
+        session = get_session(uid)
+        api = get_api(uid)
     except IndexError:
         return 0
 
@@ -97,32 +97,46 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
         return
 
     attachments = []
-    if photo or documents or audio or voice:
+    if photo or documents or audio or voice or video:
+        if photo:
+            attach = photo
+        elif documents:
+            attach = documents
+        elif audio:
+            attach = audio
+        elif voice:
+            attach = voice
+        elif video:
+            attach = video
+        else:
+            attach = None
+
         uploader = VkUpload(session)
+        attach_file = attach.get_file().download()
+        attach_file = open(attach_file, 'rb')
+        file_name = attach_file.name
 
         if photo:
-            photo_file = photo.get_file().download()
-            photo_file = open(photo_file, 'rb')
-            file_name = photo_file.name
-
-            upload_response = uploader.photo_messages(photos=photo_file, peer_id=vchat_id)
+            upload_response = uploader.photo_messages(photos=attach_file, peer_id=vchat_id)
             for file in upload_response:
                 attachments.append(f"photo{file['owner_id']}_{file['id']}")
 
-            photo_file.close()
-            remove(file_name)
-
         if voice:
-            voice_file = voice.get_file().download()
-            voice_file = open(voice_file, 'rb')
-            file_name = voice_file.name
-
-            upload_response = uploader.audio_message(audio=voice_file, peer_id=vchat_id)
+            upload_response = uploader.audio_message(audio=attach_file, peer_id=vchat_id)
             audio = upload_response['audio_message']
             attachments.append(f"audio_message{audio['owner_id']}_{audio['id']}")
 
-            voice_file.close()
-            remove(file_name)
+        if documents:
+            upload_response = uploader.document_message(attach_file, peer_id=vchat_id)
+            doc = upload_response['doc']
+            attachments.append(f"doc{doc['owner_id']}_{doc['id']}")
+
+        if video:
+            video = uploader.video(attach_file, is_private=True)
+            attachments.append(f"video{video['owner_id']}_{video['video_id']}")
+
+        attach_file.close()
+        remove(file_name)
 
         attachments = ','.join(attachments)
 
@@ -135,7 +149,7 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
 
 
 def get_vk_info(uid, vk_chat_id, fields=None):
-    api = get_api(uid, proxy=use_proxy)
+    api = get_api(uid)
 
     if vk_chat_id > 0:
         # If chat with user

@@ -18,17 +18,7 @@ OAUTH, TOKEN = range(0, 2)
 CONV = range(1000000000, 1000000001)
 
 
-def start(update, context):
-    uid = update.effective_user.id
-    context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Soock!"
-                                                                  "\nDo you want to sign in? Write /auth")
-    execute(f"insert into logins (uid) values ({uid}) on conflict do nothing")
-
-
-def unknown(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Unknown command')
-
-
+# ############# auth ############# #
 def start_auth(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=f'Go to\n{oauth_link}\nAnd copy url after grant '
                                                                     f'privileges to bot')
@@ -62,9 +52,10 @@ def get_oauth_token(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text='You have signed in!\nCreate new chat and add me')
 
 
+# ############# conversation ############# #
 def list_convs(update, context, page=1, prev=False):
     uid = update.effective_user.id
-    api = get_api(uid, proxy=use_proxy)
+    api = get_api(uid)
     offset = (page-1)*max_convs_per_page
     keyboard = []
 
@@ -191,16 +182,12 @@ def change_group_description(context, chat_id, description):
         return
 
 
-def service_msg_cleaner(update, context):
-    message_id = update.effective_message.message_id
-    chat_id = update.effective_chat.id
-    context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
-
-
+# ############# VK ############# #
 def send_msg(update, context):
     uid = update.effective_user.id
     msg = update.message.text
     photo = update.message.photo
+    video = update.message.video
     documents = update.message.document
     audio = update.message.audio
     voice = update.message.voice
@@ -211,13 +198,31 @@ def send_msg(update, context):
     if photo:
         photo = photo[-1]
 
-    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents, audio=audio, voice=voice)
+    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents, audio=audio, voice=voice, video=video)
+
+
+# ############# service ############# #
+def start(update, context):
+    uid = update.effective_user.id
+    context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Soock!"
+                                                                  "\nDo you want to sign in? Write /auth")
+    execute(f"insert into logins (uid) values ({uid}) on conflict do nothing")
+
+
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Unknown command')
+
+
+def service_msg_cleaner(update, context):
+    message_id = update.effective_message.message_id
+    chat_id = update.effective_chat.id
+    context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
 
 
 def new_chat(update, context):
     greeting = "You need to make me admin, i can update info about your friends and change their online status.\n\n" \
                "After you've made me admin, type /lc for list conversations and choose conversation with your friend."
-    context.bot.deleteMessage(chat_id=update.effective_chat.id, message_id=greeting)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=greeting)
 
 
 def callback(update, context):

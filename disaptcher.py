@@ -30,9 +30,11 @@ send_msg_handler = MessageHandler(Filters.group, send_msg)
 update_conv_handler = CommandHandler("grp_upd", update_conv)
 chat_photo_update_handler = MessageHandler(Filters.status_update.new_chat_photo, service_msg_cleaner)
 chat_title_update_handler = MessageHandler(Filters.status_update.new_chat_title, service_msg_cleaner)
+new_chat_handler = MessageHandler(Filters.status_update.chat_created, new_chat)
 
 
 def init_handlers():
+    dp.add_handler(new_chat_handler)
     dp.add_handler(start_handler)
     dp.add_handler(login_handler)
     dp.add_handler(list_convs_handler)

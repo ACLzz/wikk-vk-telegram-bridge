@@ -1,13 +1,15 @@
 from VK.main import get_session
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from database.db import execute
+from database.db import execute, get_token
 from secret import use_proxy
 
 from multiprocessing import Process
 
 from telegram import ChatAction
 from telegram.error import BadRequest
+from requests import post
+import json
 
 workers = {}
 
@@ -31,7 +33,7 @@ class Worker:
     def __init__(self, bot, uid):
         self.bot = bot
         self.uid = uid
-        self.session = get_session(uid, proxy=use_proxy)
+        self.session = get_session(uid)
         self.api = self.session.get_api()
         self.poll = VkLongPoll(self.session, mode=2)
 
@@ -74,6 +76,9 @@ class Worker:
 
     def event_process(self):
         self.good_event = not self.event.from_me and self.event.type not in self.restricted_events
+        if not self.good_event:
+            return 0
+
         self.event_t = self.event.type
 
         if self.event_t == VkEventType.USER_ONLINE or self.event_t == VkEventType.USER_OFFLINE \
@@ -100,10 +105,33 @@ class Worker:
 
                     if atype == 'photo':
                         url = attach['photo']['sizes'][-1]['url']
+
                     elif atype == 'audio_message':
                         url = attach['audio_message']['link_ogg']
+
+                    elif atype == 'doc':
+                        url = attach['doc']['url']
+
+                    elif atype == 'video':
+                        video_id = f"{attach['video']['owner_id']}_{attach['video']['id']}_{attach['video']['access_key']}"
+                        token = get_token(self.uid)
+                        if token is None:
+                            continue
+
+                        url = "https://api.vk.com/method/video.get"
+                        data = {
+                            "access_token": token,
+                            "v": "5.103",
+                            "videos": video_id
+                        }
+                        response = post(url=url, data=data).content
+                        videos = json.loads(response)['response']['items'][0]['files']
+                        url = list(videos.values())[-2]
+
                     else:
-                        raise Exception
+                        self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
+                        self.cleaner()
+                        return
 
                     self.attchs.append(url)
                     counter += 1
@@ -125,6 +153,24 @@ class Worker:
                 if self.attchs_types[i] == 'audio_message':
                     voice_url = self.attchs[i]
                     self.bot.send_voice(chat_id=self.chat_id, voice=voice_url)
+
+                if self.attchs_types[i] == 'video':
+                    video_url = self.attchs[i]
+                    text = self.event.text
+
+                    if text:
+                        self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=text)
+                    else:
+                        self.bot.send_video(chat_id=self.chat_id, video=video_url)
+
+                if self.attchs_types[i] == 'doc':
+                    doc_url = self.attchs[i]
+                    text = self.event.text
+
+                    if text:
+                        self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=text)
+                    else:
+                        self.bot.send_document(chat_id=self.chat_id, document=doc_url)
 
                 i += 1
         else:
