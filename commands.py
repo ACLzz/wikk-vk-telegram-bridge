@@ -55,7 +55,10 @@ def get_oauth_token(update, context):
 # ############# conversation ############# #
 def list_convs(update, context, page=1, prev=False):
     uid = update.effective_user.id
-    api = get_api(uid)
+    try:
+        api = get_api(uid)
+    except IndexError:
+        return 0
     offset = (page-1)*max_convs_per_page
     keyboard = []
 
@@ -129,7 +132,10 @@ def update_conv(update, context):
 
 def update_group_info(uid, update, context, vk_chat_id, chat_id):
     if vk_chat_id > 0:
-        user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
+        try:
+            user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
+        except IndexError:
+            return 0
 
         title = f"{user['first_name']} {user['last_name']}"
         if user['online']:
@@ -140,7 +146,11 @@ def update_group_info(uid, update, context, vk_chat_id, chat_id):
         photo_url = user['photo_200']
         description = user['status']
     else:
-        group = get_vk_info(uid, vk_chat_id, ['status', 'description'])
+        try:
+            group = get_vk_info(uid, vk_chat_id, ['status', 'description'])
+        except IndexError:
+            return 0
+
         title = group['name']
         photo_url = group['photo_200']
         description = f"{group['status']}\n\n{group['description']}"
