@@ -9,8 +9,7 @@ verify_ssl = true
 requests = ">=2.23.0"
 psutil = ">=5.7.0"
 psycopg2 = ">=2.8.5"
-python-telegram-bot = ">=12.7"
-
+python-telegram-bot = "*"
 
 [requires]
 python_version = "3.8"
