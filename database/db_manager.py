@@ -5,8 +5,8 @@ import sys
 
 sys.path.append("..")
 
-from secret import get_db_pass, write_db_pass
-
+from secret import get_db_info, write_db_pass
+mode = 'prod'
 
 def gen_password(length=25):
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
@@ -23,16 +23,10 @@ def gen_password(length=25):
     return password
 
 
-def dconnect(username='zizzwejopwyskk', db=None, password=None):
-    host = 'ec2-54-246-90-10.eu-west-1.compute.amazonaws.com'
-    port = '5432'
-
-    if password is None:
-        password = "d0c709cd8ad20b99c7b65d9a6313e6db6db446000121da12e28d6cb2bd4485a5"
-    if db is None:
-        db = 'd7iteodg9f7sr3'
-
-    c = connect(database=db, user=username, password=password, host=host, port=port)
+def dconnect():
+    db_info = get_db_info()
+    c = connect(database=db_info['db'], user=db_info['username'], password=db_info['password'],
+                host=db_info['host'], port=db_info['port'])
     c.autocommit = True
     return c
 
@@ -69,11 +63,11 @@ def create_user(username='wikk'):
 
 
 def create_database():
-    """
-    c = dconnect()
-    execute(c, "create database wikk_logins;")
-    c.close()
-    """
+    if mode == 'dev':
+        c = dconnect()
+        execute(c, "create database wikk_logins;")
+        c.close()
+
     c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
     execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT);")
@@ -84,18 +78,28 @@ def create_database():
 def clear():
     c = dconnect()
 
-    try:
-        execute(c, "drop database wikk;")
-    except errors.InvalidCatalogName:
-        pass
-    try:
-        execute(c, "drop database wikk_logins;")
-    except errors.InvalidCatalogName:
-        pass
-    try:
-        execute(c, "drop user wikk;")
-    except errors.UndefinedObject:
-        pass
+    if mode == 'dev':
+        try:
+            execute(c, "drop database wikk;")
+        except errors.InvalidCatalogName:
+            pass
+        try:
+            execute(c, "drop database wikk_logins;")
+        except errors.InvalidCatalogName:
+            pass
+        try:
+            execute(c, "drop user wikk;")
+        except errors.UndefinedObject:
+            pass
+    else:
+        try:
+            execute(c, 'drop table chats')
+        except errors.UndefinedTable:
+            pass
+        try:
+            execute(c, 'drop table logins;')
+        except errors.UndefinedTable:
+            pass
 
     c.close()
     print("Cleaning finished")
@@ -124,10 +128,11 @@ if __name__ == "__main__":
     elif act == 'clean':
         clear()
     elif act == 'all':
-        if args_cnt > 2:
-            create_user(sys.argv[2])
-        else:
-            create_user()
+        if mode == 'dev':
+            if args_cnt > 2:
+                create_user(sys.argv[2])
+            else:
+                create_user()
 
         create_database()
     else:
