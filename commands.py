@@ -204,7 +204,7 @@ def send_msg(update, context):
 # ############# service ############# #
 def start(update, context):
     uid = update.effective_user.id
-    context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Soock!"
+    context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Wikk!"
                                                                   "\nDo you want to sign in? Write /auth")
     execute(f"insert into logins (uid) values ({uid}) on conflict do nothing")
 

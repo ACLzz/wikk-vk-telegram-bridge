@@ -1,6 +1,6 @@
 from json import loads, dumps
 import os
-from requests import get, exceptions
+from requests import get
 
 secrets_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/secrets.json'
 proxies_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/http_proxies.txt'
@@ -23,10 +23,6 @@ def write_secrets(secrets):
 
 def get_token():
     return get_secrets()['token']
-
-
-def get_vk(opt):
-    return get_secrets()['VK'][f'{opt}']
 
 
 def get_db_pass(user):
