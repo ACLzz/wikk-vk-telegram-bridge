@@ -25,9 +25,9 @@ def get_token():
     return get_secrets()['token']
 
 
-def get_db_pass(user):
+def get_db_info():
     try:
-        return get_secrets()['db'][user]
+        return get_secrets()['db']
     except KeyError:
         return None
 

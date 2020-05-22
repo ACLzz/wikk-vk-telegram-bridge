@@ -56,6 +56,7 @@ def start():
                               port=port,
                               url_path=token)
         updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(app_name, token))
+        log.info(f"{app_name}: start")
 
     log.info("Polling started")
 
