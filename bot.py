@@ -1,17 +1,17 @@
 import logging
 from disaptcher import updater, init_handlers, init_workers
-from secret import load_proxies, use_proxy
+from secret import load_proxies, use_proxy, get_token
 from VK.worker import workers
 import psutil
 
-from os import remove, listdir
-
+from os import remove, listdir, environ
 
 from signal import signal, SIGINT
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 log = logging
+mode = 'prod'
 
 
 def stop(signum, frame):
@@ -41,10 +41,22 @@ def start():
     if use_proxy:
         load_proxies()
     init_handlers()
-    # init_workers()
+    init_workers()
 
     log.info("Initialized. Starting polling")
-    updater.start_polling()
+
+    if mode == 'dev':
+        updater.start_polling()
+    elif mode == 'prod':
+        port = int(environ.get("PORT", "8443"))
+        app_name = environ.get("HEROKU_APP_NAME")
+        token = get_token()
+
+        updater.start_webhook(listen="0.0.0.0",
+                              port=port,
+                              url_path=token)
+        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(app_name, token))
+
     log.info("Polling started")
 
 
