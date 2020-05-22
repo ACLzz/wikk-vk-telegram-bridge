@@ -6,12 +6,12 @@ from secret import get_db_pass
 
 
 def conn(db=None):
-    login = 'wikk'
-    host = '127.0.0.1'
+    login = 'zizzwejopwyskk'
+    host = 'ec2-54-246-90-10.eu-west-1.compute.amazonaws.com'
     port = '5432'
     if db is None:
-        db = 'wikk_logins'
-    password = get_db_pass(login)
+        db = 'd7iteodg9f7sr3'
+    password = 'd0c709cd8ad20b99c7b65d9a6313e6db6db446000121da12e28d6cb2bd4485a5'
 
     c = connect(database=db, user=login, password=password, host=host, port=port)
     c.autocommit = True

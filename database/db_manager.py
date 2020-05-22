@@ -23,13 +23,14 @@ def gen_password(length=25):
     return password
 
 
-def dconnect(username='wikk', db=None):
-    host = '127.0.0.1'
+def dconnect(username='zizzwejopwyskk', db=None, password=None):
+    host = 'ec2-54-246-90-10.eu-west-1.compute.amazonaws.com'
     port = '5432'
 
-    password = get_db_pass(username)
+    if password is None:
+        password = "d0c709cd8ad20b99c7b65d9a6313e6db6db446000121da12e28d6cb2bd4485a5"
     if db is None:
-        db = username
+        db = 'd7iteodg9f7sr3'
 
     c = connect(database=db, user=username, password=password, host=host, port=port)
     c.autocommit = True
@@ -49,7 +50,7 @@ def create_user(username='wikk'):
     password = gen_password()
     write_db_pass(username, password)
 
-    c = dconnect('postgres')
+    c = dconnect()
 
     try:
         execute(c, f"CREATE USER {username} WITH ENCRYPTED PASSWORD '{password}';")
@@ -68,11 +69,12 @@ def create_user(username='wikk'):
 
 
 def create_database():
+    """
     c = dconnect()
     execute(c, "create database wikk_logins;")
     c.close()
-
-    c = dconnect(db='wikk_logins')
+    """
+    c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
     execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT);")
     c.close()
@@ -80,7 +82,7 @@ def create_database():
 
 
 def clear():
-    c = dconnect('postgres')
+    c = dconnect()
 
     try:
         execute(c, "drop database wikk;")
