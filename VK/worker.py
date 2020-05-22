@@ -2,7 +2,6 @@ from VK.main import get_session
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from database.db import execute, get_token
-from secret import use_proxy
 
 from multiprocessing import Process
 
@@ -12,6 +11,7 @@ from requests import post
 import json
 
 workers = {}
+rebrand_api_key = "ac8965f9c18847099b7ea5d6ee3e4220"
 
 
 def create_worker(bot, uid):
@@ -50,6 +50,7 @@ class Worker:
     attchs_count = 0
     attchs_types = []
     cont_attchs = False  # Bool if containing attachments
+    video_dur = 0
 
     def start(self):
         for self.event in self.poll.listen():
@@ -113,10 +114,10 @@ class Worker:
                         url = attach['doc']['url']
 
                     elif atype == 'video':
-                        video_id = f"{attach['video']['owner_id']}_{attach['video']['id']}_{attach['video']['access_key']}"
                         token = get_token(self.uid)
                         if token is None:
                             continue
+                        video_id = f"{attach['video']['owner_id']}_{attach['video']['id']}_{attach['video']['access_key']}"
 
                         url = "https://api.vk.com/method/video.get"
                         data = {
@@ -124,9 +125,20 @@ class Worker:
                             "v": "5.103",
                             "videos": video_id
                         }
-                        response = post(url=url, data=data).content
-                        videos = json.loads(response)['response']['items'][0]['files']
-                        url = list(videos.values())[-2]
+                        response = json.loads(post(url=url, data=data).content)
+                        self.video_dur = response['response']['items'][0]['duration']
+                        videos = response['response']['items'][0]['files']
+
+                        if 'mp4_1080' in videos:
+                            url = videos['mp4_1080']
+                        elif 'mp4_720' in videos:
+                            url = videos['mp4_720']
+                        elif 'mp4_480' in videos:
+                            url = videos['mp4_480']
+                        elif 'mp4_240' in videos:
+                            url = videos['mp4_240']
+                        else:
+                            url = list(videos.values())[-2]
 
                     else:
                         self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
@@ -157,6 +169,13 @@ class Worker:
                 if self.attchs_types[i] == 'video':
                     video_url = self.attchs[i]
                     text = self.event.text
+
+                    if self.video_dur > 30:
+                        video_url = short_url(video_url)
+                        msg = text + '\n\nThis video is more than 30 seconds, so take url:\n' + video_url
+                        i += 1
+                        self.bot.send_message(chat_id=self.chat_id, text=msg)
+                        continue
 
                     if text:
                         self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=text)
@@ -199,6 +218,7 @@ class Worker:
         self.attchs_count = 0
         self.attchs_types.clear()
         self.cont_attchs = False
+        self.video_dur = 0
 
 
 def get_chat_id(vk_chat_id):
@@ -210,7 +230,18 @@ def get_chat_id(vk_chat_id):
         return 0
 
 
-def alarm(signum, frame):
-    print("ALARM!!!")
-    with open("1111111111111111111111111111111111111111111111111111", "w") as f:
-        f.write("ALARM!!!")
+def short_url(url):
+    link_request = {
+        "destination": url,
+        "domain": {"fullName": "rebrand.ly"}
+    }
+
+    request_headers = {
+        "Content-type": "application/json",
+        "apikey": rebrand_api_key,
+    }
+
+    r = post("https://api.rebrandly.com/v1/links",
+             data=json.dumps(link_request),
+             headers=request_headers)
+    return r.json()['shortUrl']

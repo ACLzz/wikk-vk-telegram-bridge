@@ -9,7 +9,6 @@ import sys
 from random import randint
 from os import remove
 
-
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -19,11 +18,11 @@ sys.path.append('..')
 from secret import get_proxy, use_proxy
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
-oauth_link = "http://cuterme.herokuapp.com/4nvL6"
+oauth_link = "https://rebrand.ly/afvs861"
 apis = {}
 
 
-def login(uid, token):
+def login(uid, token, bot):
     api = get_api(uid, token, new=True)
     try:
         # Check for successful login
@@ -31,10 +30,17 @@ def login(uid, token):
     except ConnectionError:
         # Proxy error
         log.error("Bot don't has access to VK.com")
-        pass
+        return 1
     except exceptions.ApiError:
         # Unsuccessful login
         return 2
+
+    chats = execute(f"select chat_id from chats where uid = {uid}")
+    if chats:
+        for chat in chats:
+            bot.send_message(chat_id=chat[0], text="This chat has been deactivated because"
+                                                   " you've logout from your account.\nUse /lc to choose new one")
+    execute(f"delete from chats where uid = {uid}")
 
     execute(f"update logins set token = '{token}' where uid = {uid}")
     # Adding api object to memory

@@ -6,7 +6,7 @@ from telegram.error import BadRequest
 
 from VK.main import oauth_link, login, get_api, get_conversations, send_message, get_vk_info
 from VK.worker import create_worker
-from secret import max_convs_per_page, use_proxy
+from secret import max_convs_per_page
 
 from requests import get
 from psycopg2 import errors
@@ -20,8 +20,8 @@ CONV = range(1000000000, 1000000001)
 
 # ############# auth ############# #
 def start_auth(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f'Go to\n{oauth_link}\nAnd copy url after grant '
-                                                                    f'privileges to bot')
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'Go to\n{oauth_link}\nAnd copy url, after grant '
+                                                                    f'privileges, to bot')
     return TOKEN
 
 
@@ -42,7 +42,7 @@ def get_oauth_token(update, context):
     if token is None:
         return TOKEN
     # try to login
-    result = login(uid, token)
+    result = login(uid, token, context.bot)
 
     if result == 2:
         # If login unsuccessful
@@ -223,6 +223,16 @@ def new_chat(update, context):
     greeting = "You need to make me admin, i can update info about your friends and change their online status.\n\n" \
                "After you've made me admin, type /lc for list conversations and choose conversation with your friend."
     context.bot.send_message(chat_id=update.effective_chat.id, text=greeting)
+
+
+def user_leave(update, context):
+    uid = update.effective_user.id
+    chat_id = update.message.chat_id
+    execute(f"delete from chats where uid = {uid} and chat_id = {chat_id}")
+
+
+def status_messages_ignore(update, context):
+    pass
 
 
 def callback(update, context):

@@ -4,6 +4,8 @@ from secret import load_proxies, use_proxy
 from VK.worker import workers
 import psutil
 
+from os import remove, listdir
+
 
 from signal import signal, SIGINT
 
@@ -23,6 +25,11 @@ def stop(signum, frame):
         # Killing worker
         parent.kill()
     log.info("Workers stopped")
+
+    for file in listdir():
+        if '.png' in file or 'file' in file:
+            remove(file)
+    log.info("All unsent files cleaned")
 
     updater.stop()
     log.info("Stopped.")
