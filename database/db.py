@@ -6,11 +6,11 @@ from secret import get_db_pass
 
 
 def conn(db=None):
-    login = 'soock'
+    login = 'wikk'
     host = '127.0.0.1'
     port = '5432'
     if db is None:
-        db = 'soock_logins'
+        db = 'wikk_logins'
     password = get_db_pass(login)
 
     c = connect(database=db, user=login, password=password, host=host, port=port)

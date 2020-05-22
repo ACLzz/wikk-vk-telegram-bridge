@@ -23,7 +23,7 @@ def gen_password(length=25):
     return password
 
 
-def dconnect(username='soock', db=None):
+def dconnect(username='wikk', db=None):
     host = '127.0.0.1'
     port = '5432'
 
@@ -45,7 +45,7 @@ def execute(c, query):
     cur.close()
 
 
-def create_user(username='soock'):
+def create_user(username='wikk'):
     password = gen_password()
     write_db_pass(username, password)
 
@@ -69,10 +69,10 @@ def create_user(username='soock'):
 
 def create_database():
     c = dconnect()
-    execute(c, "create database soock_logins;")
+    execute(c, "create database wikk_logins;")
     c.close()
 
-    c = dconnect(db='soock_logins')
+    c = dconnect(db='wikk_logins')
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
     execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT);")
     c.close()
@@ -83,15 +83,15 @@ def clear():
     c = dconnect('postgres')
 
     try:
-        execute(c, "drop database soock;")
+        execute(c, "drop database wikk;")
     except errors.InvalidCatalogName:
         pass
     try:
-        execute(c, "drop database soock_logins;")
+        execute(c, "drop database wikk_logins;")
     except errors.InvalidCatalogName:
         pass
     try:
-        execute(c, "drop user soock;")
+        execute(c, "drop user wikk;")
     except errors.UndefinedObject:
         pass
 
