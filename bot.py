@@ -41,7 +41,7 @@ def start():
     if use_proxy:
         load_proxies()
     init_handlers()
-    init_workers()
+    # init_workers()
 
     log.info("Initialized. Starting polling")
     updater.start_polling()
