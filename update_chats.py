@@ -6,22 +6,45 @@ from datetime import datetime
 import pytz
 import logging
 from signal import signal, SIGINT
+from telegram import error
+from multiprocessing import Pool
+from os import environ, listdir, remove
 
 local_tz = pytz.timezone('Europe/Zaporozhye')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 log = logging
+workers = int(environ.get("POOL_WORKERS"))
 
 
 def run(bot):
     chats = execute("select * from chats;")
 
+    data = []
     for chat in chats:
-        chat_id = chat[0]
-        uid = chat[1]
-        vk_chat_id = chat[2]
-        update_group_info(uid, bot, vk_chat_id, chat_id)
+        data.append([chat, bot])
+
+    with Pool(workers) as p:
+        p.map(_update, data)
+
+    for file in listdir():
+        if '.png' in file or ('file' in file and 'Pip' not in file and 'Proc' not in file):
+            remove(file)
     log.info("Chats updated")
+
+
+def _update(data):
+    chat, bot = data
+    chat_id = chat[0]
+    uid = chat[1]
+    vk_chat_id = chat[2]
+    if vk_chat_id == 0:
+        return
+
+    try:
+        update_group_info(uid, bot, vk_chat_id, chat_id)
+    except error.BadRequest:
+        pass
 
 
 def utc_to_local(utc_dt):
