@@ -2,10 +2,11 @@ from VK.main import get_session
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from database.db import execute, get_token
+from secret import get_token as get_t
 
 from multiprocessing import Process
 
-from telegram import ChatAction
+from telegram import ChatAction, Bot
 from telegram.error import BadRequest
 from requests import post
 import json
@@ -18,13 +19,14 @@ def create_worker(bot, uid):
     if f'{uid}' in workers:
         return 0
     # Create worker process
-    proc = Process(target=_create_worker, args=(bot, uid))
+    proc = Process(target=_create_worker, args=(uid,))
     workers[f'{uid}'] = proc
     proc.start()
     return 0
 
 
-def _create_worker(bot, uid):
+def _create_worker(uid):
+    bot = Bot(token=get_t())
     worker = Worker(bot, uid)
     worker.start()
 
