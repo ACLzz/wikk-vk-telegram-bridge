@@ -27,7 +27,7 @@ def stop(signum, frame):
     log.info("Workers stopped")
 
     for file in listdir():
-        if '.png' in file or ('file' in file and 'Pip' not in file):
+        if '.png' in file or ('file' in file and 'Pip' not in file and 'Proc' not in file):
             remove(file)
     log.info("All unsent files cleaned")
 
