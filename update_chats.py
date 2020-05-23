@@ -8,7 +8,7 @@ import logging
 from signal import signal, SIGINT
 from telegram import error
 from multiprocessing import Pool
-from os import environ, listdir, remove
+from os import environ, listdir, remove, path
 
 local_tz = pytz.timezone('Europe/Zaporozhye')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -28,7 +28,7 @@ def run(bot):
         p.map(_update, data)
 
     for file in listdir():
-        if '.png' in file or ('file' in file and 'Pip' not in file and 'Proc' not in file):
+        if ('.png' in file or ('file' in file and 'Pip' not in file and 'Proc' not in file)) and path.isfile(file):
             remove(file)
     log.info("Chats updated")
 

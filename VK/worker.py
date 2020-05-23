@@ -49,10 +49,13 @@ class Worker:
 
     chat_id = None
     message_id = None
+    extended_message = None
     text = ""
     attchs = []
     attchs_count = 0
     attchs_types = []
+    forwards_root = False
+    forwards = []
     cont_attchs = False  # Bool if containing attachments
     video_dur = 0
 
@@ -95,27 +98,30 @@ class Worker:
             else:
                 vid = self.event.user_id
 
-            self.text = self.event.text
-
             self.chat_id = get_chat_id(vid)
+            self.text = self.event.text
+            message_id = self.event.message_id
+
             if not self.chat_id:
                 # Chat with bot
                 self.chat_id = execute(f"select chat_id from chats where uid = {self.uid} and vchat_id = 0;")[0][0]
                 self.text = "You have new message, create new chat to reply:\n\n" + self.text
-
             attchs = self.event.attachments.values()
-            self.message_id = self.event.message_id
 
             if attchs:
-                self.cont_attchs = True
-                self.attachments_process()
+                self.attachments_process(message_id)
             else:
                 self.cont_attchs = False
 
-    def attachments_process(self):
-        attachments_from_msg = self.api.messages.getById(message_ids=self.message_id)['items'][0]['attachments']
-        counter = 0
+    def attachments_process(self, message_id):
+        self.extended_message = self.api.messages.getById(message_ids=message_id)['items'][0]
+        attachments_from_msg = self.extended_message['attachments']
 
+        if attachments_from_msg:
+            self.cont_attchs = True
+
+        counter = 0
+        print(self.extended_message)
         for attach in attachments_from_msg:
             atype = attach['type']
             self.attchs_types.append(atype)
@@ -164,47 +170,83 @@ class Worker:
             self.attchs.append(url)
             counter += 1
 
+        if self.extended_message['fwd_messages']:
+            self.forwards_root = True
+
         self.attchs_count = counter
+
+    def forwards_process(self, forwards, i=0):
+        i += 1
+        for forward in forwards:
+            self.attchs.clear()
+            self.cont_attchs = False
+            self.text = ''
+
+            self.text += ">" * i
+            if forward['text']:
+                self.text += " " + forward['text']
+
+            self.attachments_process(forward['id'])
+            self.forwards_root = False
+            self.new_message()
+
+            try:
+                self.forwards_process(forward['fwd_messages'], i)
+            except KeyError:
+                pass
 
     def new_message(self):
         if self.cont_attchs:
             i = 0
             while i < self.attchs_count:
                 if self.attchs_types[i] == 'photo':
-                    if self.text:
-                        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[i], caption=self.text)
-                    else:
-                        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[i])
+                    self.attch_photo(i)
 
                 if self.attchs_types[i] == 'audio_message':
-                    voice_url = self.attchs[i]
-                    self.bot.send_voice(chat_id=self.chat_id, voice=voice_url)
+                    self.attch_voice(i)
 
                 if self.attchs_types[i] == 'video':
-                    video_url = self.attchs[i]
-                    if self.video_dur > 30:
-                        video_url = short_url(video_url)
-                        msg = self.text + '\n\nThis video is more than 30 seconds, so take url:\n' + video_url
-                        i += 1
-                        self.bot.send_message(chat_id=self.chat_id, text=msg)
-                        continue
-
-                    if self.text:
-                        self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=self.text)
-                    else:
-                        self.bot.send_video(chat_id=self.chat_id, video=video_url)
+                    self.attch_video(i)
 
                 if self.attchs_types[i] == 'doc':
-                    doc_url = self.attchs[i]
-
-                    if self.text:
-                        self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=self.text)
-                    else:
-                        self.bot.send_document(chat_id=self.chat_id, document=doc_url)
-
+                    self.attch_doc(i)
                 i += 1
         else:
             self.bot.send_message(chat_id=self.chat_id, text=self.text)
+
+        if self.forwards_root:
+            self.forwards_process(self.extended_message['fwd_messages'])
+
+    def attch_photo(self, index):
+        if self.text:
+            self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[index], caption=self.text)
+        else:
+            self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[index])
+
+    def attch_voice(self, index):
+        voice_url = self.attchs[index]
+        self.bot.send_voice(chat_id=self.chat_id, voice=voice_url)
+
+    def attch_video(self, index):
+        video_url = self.attchs[index]
+        if self.video_dur > 30:
+            video_url = short_url(video_url)
+            msg = self.text + '\n\nThis video is more than 30 seconds, so take url:\n' + video_url
+            self.bot.send_message(chat_id=self.chat_id, text=msg)
+            return
+
+        if self.text:
+            self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=self.text)
+        else:
+            self.bot.send_video(chat_id=self.chat_id, video=video_url)
+
+    def attch_doc(self, index):
+        doc_url = self.attchs[index]
+
+        if self.text:
+            self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=self.text)
+        else:
+            self.bot.send_document(chat_id=self.chat_id, document=doc_url)
 
     def user_online(self, online):
         title = self.bot.get_chat(chat_id=self.chat_id)['title'][:-1]
@@ -225,10 +267,13 @@ class Worker:
         self.good_event = False
         self.chat_id = None
         self.message_id = None
+        self.extended_message = None
         self.text = ""
         self.attchs.clear()
         self.attchs_count = 0
         self.attchs_types.clear()
+        self.forwards_root = False
+        self.forwards.clear()
         self.cont_attchs = False
         self.video_dur = 0
 

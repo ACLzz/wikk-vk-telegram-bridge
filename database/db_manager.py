@@ -80,7 +80,7 @@ def create_database():
 def clear():
     c = dconnect()
 
-    if mode == 'local':
+    if mode == 'dev':
         try:
             execute(c, "drop database wikk;")
         except errors.InvalidCatalogName:
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     elif act == 'clean':
         clear()
     elif act == 'all':
-        if mode == 'local':
+        if mode == 'dev':
             if args_cnt > 2:
                 create_user(sys.argv[2])
             else:
