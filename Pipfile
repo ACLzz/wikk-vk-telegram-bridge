@@ -12,6 +12,7 @@ psycopg2 = ">=2.8.5"
 python-telegram-bot = "*"
 vk-api = "*"
 pillow = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.8"

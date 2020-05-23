@@ -123,14 +123,14 @@ def update_conv(update, context):
 
     vk_chat_id = execute(f"select vchat_id from chats where chat_id = {chat_id}")[0][0]
     try:
-        update_group_info(uid, update, context, vk_chat_id, chat_id)
+        update_group_info(uid, context.bot, vk_chat_id, chat_id)
     except BadRequest:
         # If bot isn't group administrator
         context.bot.send_message(chat_id=update.effective_chat.id, text='Make bot administrator to get all features. '
                                                                         'And then try /grp_upd')
 
 
-def update_group_info(uid, update, context, vk_chat_id, chat_id):
+def update_group_info(uid, bot, vk_chat_id, chat_id):
     if vk_chat_id > 0:
         try:
             user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
@@ -155,12 +155,12 @@ def update_group_info(uid, update, context, vk_chat_id, chat_id):
         photo_url = group['photo_200']
         description = f"{group['status']}\n\n{group['description']}"
 
-    change_group_photo(context, chat_id, photo_url)
-    change_group_title(context, chat_id, title)
-    change_group_description(context, chat_id, description)
+    change_group_photo(bot, chat_id, photo_url)
+    change_group_title(bot, chat_id, title)
+    change_group_description(bot, chat_id, description)
 
 
-def change_group_photo(context, chat_id, photo_url):
+def change_group_photo(bot, chat_id, photo_url):
     photo = get(photo_url).content
     # Creating temporary img file
     filename = gen_password(10) + ".png"
@@ -171,22 +171,22 @@ def change_group_photo(context, chat_id, photo_url):
     im.save(filename, "PNG")
 
     p = open(filename, "rb")
-    context.bot.set_chat_photo(chat_id=chat_id, photo=p)
+    bot.set_chat_photo(chat_id=chat_id, photo=p)
     p.close()
     remove(filename)
 
 
-def change_group_title(context, chat_id, title):
+def change_group_title(bot, chat_id, title):
     try:
-        context.bot.set_chat_title(chat_id=chat_id, title=title)
+        bot.set_chat_title(chat_id=chat_id, title=title)
     except BadRequest:
         # If title the same
         return
 
 
-def change_group_description(context, chat_id, description):
+def change_group_description(bot, chat_id, description):
     try:
-        context.bot.set_chat_description(chat_id=chat_id, description=description)
+        bot.set_chat_description(chat_id=chat_id, description=description)
     except BadRequest:
         # If description the same
         return
