@@ -2,11 +2,13 @@ from psycopg2 import connect, errors
 from string import ascii_letters, punctuation
 from random import choice
 import sys
+from os import environ
 
 sys.path.append("..")
 
 from secret import get_db_info, write_db_pass
-mode = 'prod'
+mode = environ.get("MODE")
+
 
 def gen_password(length=25):
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
@@ -78,7 +80,7 @@ def create_database():
 def clear():
     c = dconnect()
 
-    if mode == 'dev':
+    if mode == 'local':
         try:
             execute(c, "drop database wikk;")
         except errors.InvalidCatalogName:
@@ -128,7 +130,7 @@ if __name__ == "__main__":
     elif act == 'clean':
         clear()
     elif act == 'all':
-        if mode == 'dev':
+        if mode == 'local':
             if args_cnt > 2:
                 create_user(sys.argv[2])
             else:

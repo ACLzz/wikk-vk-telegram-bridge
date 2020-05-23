@@ -45,9 +45,11 @@ class Worker:
     good_event = False
     event = None
     event_t = None  # Event type
+    user_actions = [VkEventType.USER_ONLINE, VkEventType.USER_OFFLINE, VkEventType.USER_TYPING]
 
     chat_id = None
     message_id = None
+    text = ""
     attchs = []
     attchs_count = 0
     attchs_types = []
@@ -84,8 +86,7 @@ class Worker:
 
         self.event_t = self.event.type
 
-        if self.event_t == VkEventType.USER_ONLINE or self.event_t == VkEventType.USER_OFFLINE \
-                or self.event_t == VkEventType.USER_TYPING:
+        if self.event_t in self.user_actions:
             self.chat_id = get_chat_id(self.event.user_id)
 
         if self.event_t == VkEventType.MESSAGE_NEW:
@@ -94,73 +95,84 @@ class Worker:
             else:
                 vid = self.event.user_id
 
+            self.text = self.event.text
+
             self.chat_id = get_chat_id(vid)
+            if not self.chat_id:
+                # Chat with bot
+                self.chat_id = execute(f"select chat_id from chats where uid = {self.uid} and vchat_id = 0;")[0][0]
+                self.text = "You have new message, create new chat to reply:\n\n" + self.text
+
             attchs = self.event.attachments.values()
             self.message_id = self.event.message_id
 
             if attchs:
                 self.cont_attchs = True
-                attachments_from_msg = self.api.messages.getById(message_ids=self.message_id)['items'][0]['attachments']
-                counter = 0
-                for attach in attachments_from_msg:
-                    atype = attach['type']
-                    self.attchs_types.append(atype)
+                self.attachments_process()
+            else:
+                self.cont_attchs = False
 
-                    if atype == 'photo':
-                        url = attach['photo']['sizes'][-1]['url']
+    def attachments_process(self):
+        attachments_from_msg = self.api.messages.getById(message_ids=self.message_id)['items'][0]['attachments']
+        counter = 0
 
-                    elif atype == 'audio_message':
-                        url = attach['audio_message']['link_ogg']
+        for attach in attachments_from_msg:
+            atype = attach['type']
+            self.attchs_types.append(atype)
 
-                    elif atype == 'doc':
-                        url = attach['doc']['url']
+            if atype == 'photo':
+                url = attach['photo']['sizes'][-1]['url']
 
-                    elif atype == 'video':
-                        token = get_token(self.uid)
-                        if token is None:
-                            continue
-                        video_id = f"{attach['video']['owner_id']}_{attach['video']['id']}_{attach['video']['access_key']}"
+            elif atype == 'audio_message':
+                url = attach['audio_message']['link_ogg']
 
-                        url = "https://api.vk.com/method/video.get"
-                        data = {
-                            "access_token": token,
-                            "v": "5.103",
-                            "videos": video_id
-                        }
-                        response = json.loads(post(url=url, data=data).content)
-                        self.video_dur = response['response']['items'][0]['duration']
-                        videos = response['response']['items'][0]['files']
+            elif atype == 'doc':
+                url = attach['doc']['url']
 
-                        if 'mp4_1080' in videos:
-                            url = videos['mp4_1080']
-                        elif 'mp4_720' in videos:
-                            url = videos['mp4_720']
-                        elif 'mp4_480' in videos:
-                            url = videos['mp4_480']
-                        elif 'mp4_240' in videos:
-                            url = videos['mp4_240']
-                        else:
-                            url = list(videos.values())[-2]
+            elif atype == 'video':
+                token = get_token(self.uid)
+                if token is None:
+                    continue
+                video_id = f"{attach['video']['owner_id']}_{attach['video']['id']}_{attach['video']['access_key']}"
 
-                    else:
-                        self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
-                        self.cleaner()
-                        return
+                url = "https://api.vk.com/method/video.get"
+                data = {
+                    "access_token": token,
+                    "v": "5.103",
+                    "videos": video_id
+                }
+                response = json.loads(post(url=url, data=data).content)
+                self.video_dur = response['response']['items'][0]['duration']
+                videos = response['response']['items'][0]['files']
 
-                    self.attchs.append(url)
-                    counter += 1
-                self.attchs_count = counter
-        else:
-            self.cont_attchs = False
+                if 'mp4_1080' in videos:
+                    url = videos['mp4_1080']
+                elif 'mp4_720' in videos:
+                    url = videos['mp4_720']
+                elif 'mp4_480' in videos:
+                    url = videos['mp4_480']
+                elif 'mp4_240' in videos:
+                    url = videos['mp4_240']
+                else:
+                    url = list(videos.values())[-2]
+
+            else:
+                self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
+                self.cleaner()
+                return
+
+            self.attchs.append(url)
+            counter += 1
+
+        self.attchs_count = counter
 
     def new_message(self):
         if self.cont_attchs:
             i = 0
             while i < self.attchs_count:
                 if self.attchs_types[i] == 'photo':
-                    text = self.event.text
-                    if text:
-                        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[i], caption=text)
+                    if self.text:
+                        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[i], caption=self.text)
                     else:
                         self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[i])
 
@@ -170,32 +182,29 @@ class Worker:
 
                 if self.attchs_types[i] == 'video':
                     video_url = self.attchs[i]
-                    text = self.event.text
-
                     if self.video_dur > 30:
                         video_url = short_url(video_url)
-                        msg = text + '\n\nThis video is more than 30 seconds, so take url:\n' + video_url
+                        msg = self.text + '\n\nThis video is more than 30 seconds, so take url:\n' + video_url
                         i += 1
                         self.bot.send_message(chat_id=self.chat_id, text=msg)
                         continue
 
-                    if text:
-                        self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=text)
+                    if self.text:
+                        self.bot.send_video(chat_id=self.chat_id, video=video_url, caption=self.text)
                     else:
                         self.bot.send_video(chat_id=self.chat_id, video=video_url)
 
                 if self.attchs_types[i] == 'doc':
                     doc_url = self.attchs[i]
-                    text = self.event.text
 
-                    if text:
-                        self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=text)
+                    if self.text:
+                        self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=self.text)
                     else:
                         self.bot.send_document(chat_id=self.chat_id, document=doc_url)
 
                 i += 1
         else:
-            self.bot.send_message(chat_id=self.chat_id, text=self.event.text)
+            self.bot.send_message(chat_id=self.chat_id, text=self.text)
 
     def user_online(self, online):
         title = self.bot.get_chat(chat_id=self.chat_id)['title'][:-1]
@@ -216,6 +225,7 @@ class Worker:
         self.good_event = False
         self.chat_id = None
         self.message_id = None
+        self.text = ""
         self.attchs.clear()
         self.attchs_count = 0
         self.attchs_types.clear()

@@ -11,7 +11,7 @@ from signal import signal, SIGINT
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 log = logging
-mode = 'prod'
+mode = environ.get("MODE")
 
 
 def stop(signum, frame):
@@ -57,6 +57,8 @@ def start():
                               url_path=token)
         updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(app_name, token))
         log.info(f"{app_name}: start")
+    else:
+        raise Exception()
 
     log.info("Polling started")
 
