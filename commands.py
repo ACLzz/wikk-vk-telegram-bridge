@@ -78,8 +78,8 @@ def list_convs(update, context, page=1, prev=False):
             name = f"{vk_obj['first_name']} {vk_obj['last_name']}"
         elif ctype == 'group':
             name = f"{vk_obj['name']}"
-        else:
-            name = "unknown"
+        elif ctype == 'chat':
+            name = vk_obj['items'][0]['chat_settings']['title']
 
         keyboard.append([InlineKeyboardButton(f"{name}", callback_data=str(CONV) + str(oid))])
         i += 1

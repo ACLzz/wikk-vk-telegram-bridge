@@ -157,9 +157,11 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
 def get_vk_info(uid, vk_chat_id, fields=None):
     api = get_api(uid)
 
-    if vk_chat_id > 0:
+    if 2000000000 > vk_chat_id > 0:
         # If chat with user
         obj = api.users.get(user_ids=[vk_chat_id], fields=fields)[0]
+    elif vk_chat_id >= 2000000000:
+        obj = api.messages.getConversationsById(peers_ids=[vk_chat_id])
     else:
         # If chat with bot
         obj = api.groups.getById(group_id=[vk_chat_id*(-1)], fields=fields)[0]

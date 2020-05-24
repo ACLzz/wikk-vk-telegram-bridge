@@ -1,10 +1,11 @@
-from VK.main import get_session
+from VK.main import get_session, get_vk_info
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from database.db import execute, get_token
 from secret import get_token as get_t
 
 from multiprocessing import Process
+from datetime import datetime
 
 from telegram import ChatAction, Bot
 from telegram.error import BadRequest
@@ -58,6 +59,8 @@ class Worker:
     forwards = []
     cont_attchs = False  # Bool if containing attachments
     video_dur = 0
+
+    names = {}
 
     def start(self):
         for self.event in self.poll.listen():
@@ -121,7 +124,6 @@ class Worker:
             self.cont_attchs = True
 
         counter = 0
-        print(self.extended_message)
         for attach in attachments_from_msg:
             atype = attach['type']
             self.attchs_types.append(atype)
@@ -180,14 +182,37 @@ class Worker:
         for forward in forwards:
             self.attchs.clear()
             self.cont_attchs = False
-            self.text = ''
-
-            self.text += ">" * i
-            if forward['text']:
-                self.text += " " + forward['text']
+            self.text = ">" * i
 
             self.attachments_process(forward['id'])
             self.forwards_root = False
+            vk_id = self.extended_message['from_id']
+
+            # Load user name from memory
+            if str(vk_id) in self.names:
+                self.text += self.names[str(vk_id)]
+            else:
+                vk_obj = get_vk_info(uid=self.uid, vk_chat_id=vk_id)
+                # If user
+                if 2000000000 > vk_id > 0:
+                    name = f" {vk_obj['first_name']} {vk_obj['last_name']}"
+                # If chat
+                elif vk_id > 2000000000:
+                    name = ' ' + vk_obj['items'][0]['chat_settings']['title']
+                # If group
+                else:
+                    name = ' ' + vk_obj['name']
+
+                self.names[str(vk_id)] = name
+                self.text += name
+
+            timestamp = forward['date']
+            time = datetime.fromtimestamp(timestamp)
+            self.text += ": " + time.strftime("%H:%M %d.%m.%Y")
+
+            if forward['text']:
+                self.text += "\n" + forward['text']
+
             self.new_message()
 
             try:
@@ -212,7 +237,10 @@ class Worker:
                     self.attch_doc(i)
                 i += 1
         else:
-            self.bot.send_message(chat_id=self.chat_id, text=self.text)
+            try:
+                self.bot.send_message(chat_id=self.chat_id, text=self.text)
+            except BadRequest:          # Empty forward
+                pass
 
         if self.forwards_root:
             self.forwards_process(self.extended_message['fwd_messages'])
