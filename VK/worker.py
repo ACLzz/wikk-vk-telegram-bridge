@@ -288,6 +288,8 @@ class Worker:
         except BadRequest:
             return 0
 
+        self.bot.set_chat_description()
+
     def user_typing(self):
         self.bot.send_chat_action(chat_id=self.chat_id, action=ChatAction.TYPING)
 

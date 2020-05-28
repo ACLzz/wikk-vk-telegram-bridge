@@ -61,9 +61,10 @@ if __name__ == '__main__':
     log.info("Start update chats worker")
 
     while True:
+        time = {"from": int(environ.get("FROM")), "to": int(environ.get("TO"))}
         sleep(25*60)
         hour = int(utc_to_local(datetime.utcnow()).strftime('%H'))
-        if 12 >= hour < 4:
+        if time['from'] >= hour < time['to']:
             continue
 
         run(b)
