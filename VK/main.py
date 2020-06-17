@@ -3,7 +3,7 @@ from vk_api import VkApi, exceptions, VkUpload
 from requests.exceptions import ConnectionError
 
 from database.db import execute
-from secret import max_convs_per_page
+from telegram_bot.secret import max_convs_per_page
 
 import sys
 from random import randint
@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 log = logging
 
 sys.path.append('..')
-from secret import get_proxy, use_proxy
+from telegram_bot.secret import get_proxy, use_proxy
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
 oauth_link = "https://rebrand.ly/afvs861"
@@ -98,6 +98,9 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
     msg_id = randint(1, 9223372036854775700)
     try:
         vchat_id = execute(f"select vchat_id from chats where chat_id = {chat_id}")[0][0]
+        # if chat is conference
+        if vchat_id is None:
+            vchat_id = execute(f"select peer_id from chats where chat_id = {chat_id}")[0][0]
     except IndexError:
         # If telegram group not binded to vk chat stream
         return
@@ -161,7 +164,8 @@ def get_vk_info(uid, vk_chat_id, fields=None):
         # If chat with user
         obj = api.users.get(user_ids=[vk_chat_id], fields=fields)[0]
     elif vk_chat_id >= 2000000000:
-        obj = api.messages.getConversationsById(peers_ids=[vk_chat_id])
+        obj = api.messages.getConversationsById(peer_ids=[vk_chat_id])['items'][0]
+        print(obj)
     else:
         # If chat with bot
         obj = api.groups.getById(group_id=[vk_chat_id*(-1)], fields=fields)[0]

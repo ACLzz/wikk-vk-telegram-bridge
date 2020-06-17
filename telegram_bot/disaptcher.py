@@ -2,11 +2,11 @@ from telegram import Bot
 from telegram.ext import Updater
 from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, CallbackQueryHandler, Filters
 
-from secret import get_token
+from telegram_bot.secret import get_token
 
-from commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg, update_conv, \
+from telegram_bot.commands import start, start_auth, get_oauth_token, unknown, callback, list_convs, send_msg, update_conv, \
     service_msg_cleaner, new_chat, user_leave, status_messages_ignore
-from commands import TOKEN
+from telegram_bot.commands import TOKEN
 
 from database.db import execute
 from VK.worker import create_worker

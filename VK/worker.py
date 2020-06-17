@@ -2,7 +2,7 @@ from VK.main import get_session, get_vk_info
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from database.db import execute, get_token
-from secret import get_token as get_t
+from telegram_bot.secret import get_token as get_t
 
 from multiprocessing import Process
 from datetime import datetime
@@ -98,11 +98,28 @@ class Worker:
         if self.event_t == VkEventType.MESSAGE_NEW:
             if self.event.from_group:
                 vid = self.event.group_id * (-1)
+                peer = False
             else:
                 vid = self.event.user_id
+                peer = self.event.peer_id
 
-            self.chat_id = get_chat_id(vid)
-            self.text = self.event.text
+            if peer:
+                if peer >= 2000000000:
+                    self.chat_id = get_chat_id(peer_id=peer)
+                    # if message from user
+                    if vid > 0:
+                        user = get_vk_info(self.uid, vid)
+                        self.text += f"{user['first_name']} {user['last_name']}:\n"
+                    # if message from bot
+                    else:
+                        group = get_vk_info(self.uid, vid)
+                        self.text += group['name']
+                else:
+                    self.chat_id = get_chat_id(vid)
+            else:
+                self.chat_id = get_chat_id(vid)
+
+            self.text += self.event.text
             message_id = self.event.message_id
 
             if not self.chat_id:
@@ -308,9 +325,12 @@ class Worker:
         self.video_dur = 0
 
 
-def get_chat_id(vk_chat_id):
+def get_chat_id(vk_chat_id=None, peer_id=None):
     try:
-        chat_id = execute(f"select chat_id from chats where vchat_id = {vk_chat_id};")[0][0]
+        if peer_id:
+            chat_id = execute(f"select chat_id from chats where peer_id = {peer_id};")[0][0]
+        else:
+            chat_id = execute(f"select chat_id from chats where vchat_id = {vk_chat_id};")[0][0]
         return chat_id
     except IndexError:
         # If vk chat stream not binded to telegram group

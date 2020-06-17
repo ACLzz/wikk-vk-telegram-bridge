@@ -2,8 +2,8 @@ from json import loads, dumps
 import os
 from requests import get
 
-secrets_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/secrets.json'
-proxies_path = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/http_proxies.txt'
+secrets_path = '/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/secrets.json'
+proxies_path = '/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/http_proxies.txt'
 
 use_proxy = int(os.environ.get("USE_PROXY"))
 proxies = []

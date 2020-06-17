@@ -6,7 +6,7 @@ from telegram.error import BadRequest
 
 from VK.main import oauth_link, login, get_api, get_conversations, send_message, get_vk_info
 from VK.worker import create_worker
-from secret import max_convs_per_page
+from telegram_bot.secret import max_convs_per_page
 
 from requests import get
 from psycopg2 import errors
@@ -79,7 +79,7 @@ def list_convs(update, context, page=1, prev=False):
         elif ctype == 'group':
             name = f"{vk_obj['name']}"
         elif ctype == 'chat':
-            name = vk_obj['items'][0]['chat_settings']['title']
+            name = vk_obj['chat_settings']['title']
 
         keyboard.append([InlineKeyboardButton(f"{name}", callback_data=str(CONV) + str(oid))])
         i += 1
@@ -104,7 +104,10 @@ def start_conv(update, context, vk_chat_id):
     chat_id = update.effective_chat.id
 
     try:
-        execute(f"insert into chats (chat_id, uid, vchat_id) values ({chat_id}, {uid}, {vk_chat_id})")
+        if vk_chat_id >= 2000000000:
+            execute(f"insert into chats (chat_id, uid, peer_id) values ({chat_id}, {uid}, {vk_chat_id})")
+        else:
+            execute(f"insert into chats (chat_id, uid, vchat_id) values ({chat_id}, {uid}, {vk_chat_id})")
     except errors.UniqueViolation:
         # If group already registred in db
         # Change vk chat stream for telegram group
@@ -122,6 +125,10 @@ def update_conv(update, context):
     chat_id = update.effective_chat.id
 
     vk_chat_id = execute(f"select vchat_id from chats where chat_id = {chat_id}")[0][0]
+    # if chat is conference
+    if vk_chat_id is None:
+        vk_chat_id = execute(f"select peer_id from chats where chat_id = {chat_id}")[0][0]
+
     try:
         update_group_info(uid, context.bot, vk_chat_id, chat_id)
     except BadRequest:
@@ -131,7 +138,8 @@ def update_conv(update, context):
 
 
 def update_group_info(uid, bot, vk_chat_id, chat_id):
-    if vk_chat_id > 0:
+    # User chat
+    if 2000000000 > vk_chat_id > 0:
         try:
             user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
         except IndexError:
@@ -145,6 +153,15 @@ def update_group_info(uid, bot, vk_chat_id, chat_id):
 
         photo_url = user['photo_200']
         description = user['status']
+    elif vk_chat_id >= 2000000000:
+        try:
+            conference = get_vk_info(uid, vk_chat_id)["chat_settings"]
+        except IndexError:
+            return 0
+
+        title = conference['title']
+        photo_url = conference['photo']['photo_200']
+        description = f'{conference["members_count"]} members'
     else:
         try:
             group = get_vk_info(uid, vk_chat_id, ['status', 'description'])
