@@ -1,3 +1,3 @@
-web: python bot.py
+web: python telegram_bot/bot.py
 
-worker: python update_chats.py
+worker: python telegram_bot/update_chats.py
