@@ -1,6 +1,6 @@
-from commands import update_group_info
+from telegram_bot.commands import update_group_info
 from database.db import execute
-from disaptcher import bot as b
+from telegram_bot.disaptcher import bot as b
 from time import sleep
 from datetime import datetime
 import pytz

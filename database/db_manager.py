@@ -1,3 +1,4 @@
+#!/bin/python
 from psycopg2 import connect, errors
 from string import ascii_letters, punctuation
 from random import choice
@@ -6,7 +7,7 @@ from os import environ
 
 sys.path.append("..")
 
-from secret import get_db_info, write_db_pass
+from telegram_bot.secret import get_db_info, write_db_pass
 mode = environ.get("MODE")
 
 
@@ -72,7 +73,7 @@ def create_database():
 
     c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
-    execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT);")
+    execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT, peer_id INT);")
     c.close()
     print("Database created successfully")
 

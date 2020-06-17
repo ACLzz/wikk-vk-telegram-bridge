@@ -2,7 +2,7 @@ from psycopg2 import connect, errors
 import sys
 
 sys.path.append("..")
-from secret import get_db_info
+from telegram_bot.secret import get_db_info
 
 
 def conn(db=None):
