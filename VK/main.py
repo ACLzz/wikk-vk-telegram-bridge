@@ -161,7 +161,7 @@ def get_vk_info(uid, vk_chat_id, fields=None, name=False):
     api = get_api(uid)
     if name:
         query = f"select name from names where oid = {vk_chat_id}"
-        db_resp = execute(query)[0]
+        db_resp = execute(query)
         if db_resp:
             return db_resp[0]
 
