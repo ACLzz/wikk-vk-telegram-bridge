@@ -159,9 +159,9 @@ def update_group_info(uid, bot, vk_chat_id, chat_id):
 
         title = f"{user['first_name']} {user['last_name']}"
         if user['online']:
-            description += "\noffline 🌕"
+            description += "\nonline 🌕"
         else:
-            description += "\nonline 🌑"
+            description += "\noffline 🌑"
 
         photo_url = user['photo_200']
     elif vk_chat_id >= 2000000000:
@@ -223,7 +223,11 @@ def change_group_description(bot, chat_id, description):
 # ############# VK ############# #
 def send_msg(update, context):
     uid = update.effective_user.id
-    msg = update.message.text
+    try:
+        msg = update.message.text
+    except AttributeError:
+        # If action is message edit
+        return
     photo = update.message.photo
     video = update.message.video
     documents = update.message.document
@@ -245,7 +249,7 @@ def start(update, context):
     chat_id = update.message.chat_id
     context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Wikk!"
                                                                   "\nDo you want to sign in? Write /auth")
-    execute(f"insert int/o logins (uid) values ({uid}) on conflict do nothing")
+    execute(f"insert into logins (uid) values ({uid}) on conflict do nothing")
     # Insert chat with bot
     execute(f"insert into chats (uid, chat_id, vchat_id) values ({uid}, {chat_id}, 0) on conflict do nothing")
 

@@ -9,8 +9,10 @@ from datetime import datetime
 
 from telegram import ChatAction, Bot
 from telegram.error import BadRequest
+
 from requests import post
 import json
+import traceback
 
 workers = {}
 rebrand_api_key = "ac8965f9c18847099b7ea5d6ee3e4220"
@@ -28,8 +30,15 @@ def create_worker(bot, uid):
 
 def _create_worker(uid):
     bot = Bot(token=get_t())
-    worker = Worker(bot, uid)
-    worker.start()
+    while True:
+        try:
+            worker = Worker(bot, uid)
+            worker.start()
+            break
+        except Exception as err:
+            print("\nWORKER EXITED WITH ERROR:\n")
+            print(traceback.format_exc())
+            print("RESTARTING WORKER\n")
 
 
 class Worker:
@@ -129,7 +138,25 @@ class Worker:
             if not self.chat_id:
                 # Chat with bot
                 self.chat_id = execute(f"select chat_id from chats where uid = {self.uid} and vchat_id = 0;")[0][0]
-                self.text = "You have new message, create new chat to reply:\n\n" + self.text
+
+                # Getting user name
+                try:
+                    user_obj = get_vk_info(self.uid, vid, name=True)
+                except IndexError:
+                    user_obj = ''
+
+                if isinstance(user_obj, str):
+                    name = user_obj
+                else:
+                    # User chat
+                    if 2000000000 > vid > 0:
+                        name = f"{user_obj['first_name']} {user_obj['last_name']}"
+                    else:
+                        name = user_obj['name']
+
+                text = f"{name}:\n"
+                text += self.text
+                self.text = "You have new message, create new chat to reply\n\n" + text
             attchs = self.event.attachments.values()
 
             if attchs:
@@ -184,6 +211,18 @@ class Worker:
                     url = videos['mp4_240']
                 else:
                     url = list(videos.values())[-2]
+
+            elif atype == 'audio':
+                audio = attach['audio']
+                minutes = int(audio['duration'] / 60)
+                seconds = audio['duration'] - (minutes * 60)
+
+                audio_wrap = f"{audio['title']} -- {audio['artist']}\n"
+                audio_wrap += f"♪ ———————————— {minutes}:{seconds}"
+                url = audio_wrap
+
+            elif atype == 'link':
+                url = attach['link']['url']
 
             else:
                 self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
@@ -255,6 +294,13 @@ class Worker:
 
                 if self.attchs_types[i] == 'doc':
                     self.attch_doc(i)
+
+                if self.attchs_types[i] == 'audio':
+                    self.attch_audio(i)
+
+                if self.attchs_types[i] == 'link':
+                    self.attch_link(i)
+
                 i += 1
         else:
             try:
@@ -296,19 +342,26 @@ class Worker:
         else:
             self.bot.send_document(chat_id=self.chat_id, document=doc_url)
 
+    def attch_audio(self, index):
+        audio_wrap = self.attchs[index]
+        text = self.text + '\n\n' + audio_wrap
+        self.bot.send_message(chat_id=self.chat_id, text=text)
+
+    def attch_link(self, index):
+        text = self.text
+        self.bot.send_message(chat_id=self.chat_id, text=text)
+
     def user_online(self, online):
         description = self.bot.get_chat(chat_id=self.chat_id)['description'].split("\no")[0]
         if online:
-            description += "\nonline 🌑"
+            description += "\nonline 🌕"
         else:
-            description += "\noffline 🌕"
+            description += "\noffline 🌑"
 
         try:
             self.bot.set_chat_description(chat_id=self.chat_id, description=description)
         except BadRequest:
             return 0
-
-        self.bot.set_chat_description()
 
     def user_typing(self):
         self.bot.send_chat_action(chat_id=self.chat_id, action=ChatAction.TYPING)

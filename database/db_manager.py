@@ -26,11 +26,14 @@ def gen_password(length=25):
     return password
 
 
-def dconnect(db=None):
+def dconnect(db=None, username=None):
     db_info = get_db_info()
     if db is None:
         db = db_info['db']
-    c = connect(database=db, user=db_info['username'], password=db_info['password'],
+
+    if username is None:
+        username = db_info['username']
+    c = connect(database=db, user=username, password=db_info['password'],
                 host=db_info['host'], port=db_info['port'])
     c.autocommit = True
     return c
@@ -51,7 +54,7 @@ def create_user(username='wikk'):
     password = gen_password()
     write_db_pass(username, password)
 
-    c = dconnect()
+    c = dconnect(db='postgres', username='postgres')
 
     try:
         execute(c, f"CREATE USER {username} WITH ENCRYPTED PASSWORD '{password}';")
@@ -71,7 +74,7 @@ def create_user(username='wikk'):
 
 def create_database():
     if mode == 'dev':
-        c = dconnect(db='wikk')
+        c = dconnect(db='wikk', username='wikk')
     else:
         c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
@@ -82,7 +85,7 @@ def create_database():
 
 
 def clear():
-    c = dconnect()
+    c = dconnect(username='postgres', db='postgres')
 
     if mode == 'dev':
         try:

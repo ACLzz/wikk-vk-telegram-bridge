@@ -163,14 +163,13 @@ def get_vk_info(uid, vk_chat_id, fields=None, name=False):
         query = f"select name from names where oid = {vk_chat_id}"
         db_resp = execute(query)
         if db_resp:
-            return db_resp[0]
+            return db_resp[0][0]
 
     if 2000000000 > vk_chat_id > 0:
         # If chat with user
         obj = api.users.get(user_ids=[vk_chat_id], fields=fields)[0]
     elif vk_chat_id >= 2000000000:
         obj = api.messages.getConversationsById(peer_ids=[vk_chat_id])['items'][0]
-        print(obj)
     else:
         # If chat with bot
         obj = api.groups.getById(group_id=[vk_chat_id*(-1)], fields=fields)[0]
