@@ -60,8 +60,6 @@ class Worker:
     cont_attchs = False  # Bool if containing attachments
     video_dur = 0
 
-    names = {}
-
     def start(self):
         for self.event in self.poll.listen():
             self.event_process()
@@ -108,12 +106,18 @@ class Worker:
                     self.chat_id = get_chat_id(peer_id=peer)
                     # if message from user
                     if vid > 0:
-                        user = get_vk_info(self.uid, vid)
-                        self.text += f"{user['first_name']} {user['last_name']}:\n"
+                        user = get_vk_info(self.uid, vid, name=True)
+                        if isinstance(user, str):
+                            self.text += f"{user}:\n"
+                        else:
+                            self.text += f"{user['first_name']} {user['last_name']}:\n"
                     # if message from bot
                     else:
-                        group = get_vk_info(self.uid, vid)
-                        self.text += group['name']
+                        group = get_vk_info(self.uid, vid, name=True)
+                        if isinstance(group, str):
+                            self.text += f"{group}:\n"
+                        else:
+                            self.text += f"{group['name']}:\n"
                 else:
                     self.chat_id = get_chat_id(vid)
             else:
@@ -206,22 +210,21 @@ class Worker:
             vk_id = self.extended_message['from_id']
 
             # Load user name from memory
-            if str(vk_id) in self.names:
-                self.text += self.names[str(vk_id)]
-            else:
-                vk_obj = get_vk_info(uid=self.uid, vk_chat_id=vk_id)
-                # If user
-                if 2000000000 > vk_id > 0:
-                    name = f" {vk_obj['first_name']} {vk_obj['last_name']}"
-                # If chat
-                elif vk_id > 2000000000:
-                    name = ' ' + vk_obj['items'][0]['chat_settings']['title']
-                # If group
-                else:
-                    name = ' ' + vk_obj['name']
 
-                self.names[str(vk_id)] = name
-                self.text += name
+            vk_obj = get_vk_info(uid=self.uid, vk_chat_id=vk_id)
+            # If user
+            if isinstance(vk_obj, str):
+                name = vk_obj
+            elif 2000000000 > vk_id > 0:
+                name = f" {vk_obj['first_name']} {vk_obj['last_name']}"
+            # If chat
+            elif vk_id > 2000000000:
+                name = ' ' + vk_obj['items'][0]['chat_settings']['title']
+            # If group
+            else:
+                name = ' ' + vk_obj['name']
+
+            self.text += name
 
             timestamp = forward['date']
             time = datetime.fromtimestamp(timestamp)
@@ -294,14 +297,14 @@ class Worker:
             self.bot.send_document(chat_id=self.chat_id, document=doc_url)
 
     def user_online(self, online):
-        title = self.bot.get_chat(chat_id=self.chat_id)['title'][:-1]
+        description = self.bot.get_chat(chat_id=self.chat_id)['description'].split("\no")[0]
         if online:
-            title += "🌑"
+            description += "\nonline 🌑"
         else:
-            title += "🌕"
+            description += "\noffline 🌕"
 
         try:
-            self.bot.set_chat_title(chat_id=self.chat_id, title=title)
+            self.bot.set_chat_description(chat_id=self.chat_id, description=description)
         except BadRequest:
             return 0
 

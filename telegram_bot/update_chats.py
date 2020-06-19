@@ -15,6 +15,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 log = logging
 workers = int(environ.get("POOL_WORKERS"))
+interval = int(environ.get("UPDATE_INTERVAL"))     # in minutes
 
 
 def run(bot):
@@ -62,9 +63,9 @@ if __name__ == '__main__':
 
     while True:
         time = {"from": int(environ.get("FROM")), "to": int(environ.get("TO"))}
-        sleep(25*60)
+        sleep(interval*60)
         hour = int(utc_to_local(datetime.utcnow()).strftime('%H'))
-        if time['from'] >= hour < time['to']:
+        if time['from'] >= hour <= time['to'] or (time['from'] == 0 and time['to'] == 0):
             continue
 
         run(b)

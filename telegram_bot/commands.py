@@ -71,15 +71,23 @@ def list_convs(update, context, page=1, prev=False):
             keyboard.append([InlineKeyboardButton('<- Previous Page', callback_data=f'prev_page,{page-1}')])
 
         ctype = conv['conversation']['peer']['type']
-        oid = conv['conversation']['peer']['id']
-        vk_obj = get_vk_info(uid, oid, [])
+        oid = conv['conversation']['peer']['id']            # Peer id
+        vk_obj = get_vk_info(uid, oid, [], name=True)
         # Getting name of vk object in list
-        if ctype == 'user':
+        if isinstance(vk_obj, str):
+            name = vk_obj
+        elif ctype == 'user':
             name = f"{vk_obj['first_name']} {vk_obj['last_name']}"
         elif ctype == 'group':
             name = f"{vk_obj['name']}"
         elif ctype == 'chat':
             name = vk_obj['chat_settings']['title']
+        else:
+            name = 'Unknown'
+
+        # Add name of vk object into database
+        query = f"insert into names (oid, name) values ({oid}, '{name}') on conflict do nothing;"
+        execute(query)
 
         keyboard.append([InlineKeyboardButton(f"{name}", callback_data=str(CONV) + str(oid))])
         i += 1
@@ -111,7 +119,10 @@ def start_conv(update, context, vk_chat_id):
     except errors.UniqueViolation:
         # If group already registred in db
         # Change vk chat stream for telegram group
-        execute(f"update chats set vchat_id = {vk_chat_id} where chat_id = {chat_id}")
+        if vk_chat_id >= 2000000000:
+            execute(f"update chats set peer_id = {vk_chat_id} where chat_id = {chat_id}")
+        else:
+            execute(f"update chats set vchat_id = {vk_chat_id} where chat_id = {chat_id}")
 
     update_conv(update, context)    # Update conversation information like in VK
 
@@ -144,15 +155,15 @@ def update_group_info(uid, bot, vk_chat_id, chat_id):
             user = get_vk_info(uid, vk_chat_id, ['status', 'photo_200', 'online'])
         except IndexError:
             return 0
+        description = user['status']
 
         title = f"{user['first_name']} {user['last_name']}"
         if user['online']:
-            title += "🌕"
+            description += "\noffline 🌕"
         else:
-            title += "🌑"
+            description += "\nonline 🌑"
 
         photo_url = user['photo_200']
-        description = user['status']
     elif vk_chat_id >= 2000000000:
         try:
             conference = get_vk_info(uid, vk_chat_id)["chat_settings"]
@@ -234,7 +245,7 @@ def start(update, context):
     chat_id = update.message.chat_id
     context.bot.send_message(chat_id=update.message.chat_id, text="Hello, i'm Wikk!"
                                                                   "\nDo you want to sign in? Write /auth")
-    execute(f"insert into logins (uid) values ({uid}) on conflict do nothing")
+    execute(f"insert int/o logins (uid) values ({uid}) on conflict do nothing")
     # Insert chat with bot
     execute(f"insert into chats (uid, chat_id, vchat_id) values ({uid}, {chat_id}, 0) on conflict do nothing")
 

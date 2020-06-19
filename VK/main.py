@@ -35,14 +35,14 @@ def login(uid, token, bot):
         # Unsuccessful login
         return 2
 
-    chats = execute(f"select chat_id from chats where uid = {uid}")
+    chats = execute(f"select chat_id from chats where uid = {uid} and vchat_id != 0;")
     if chats:
         for chat in chats:
             bot.send_message(chat_id=chat[0], text="This chat has been deactivated because"
                                                    " you've logout from your account.\nUse /lc to choose new one")
     execute(f"delete from chats where uid = {uid}")
 
-    execute(f"update logins set token = '{token}' where uid = {uid}")
+    execute(f"update logins set token = '{token}' where uid = {uid} and vchat_id != 0;")
     # Adding api object to memory
     apis[f"{uid}"] = api
 
@@ -157,8 +157,13 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
     api.account.setOffline()
 
 
-def get_vk_info(uid, vk_chat_id, fields=None):
+def get_vk_info(uid, vk_chat_id, fields=None, name=False):
     api = get_api(uid)
+    if name:
+        query = f"select name from names where oid = {vk_chat_id}"
+        db_resp = execute(query)[0]
+        if db_resp:
+            return db_resp[0]
 
     if 2000000000 > vk_chat_id > 0:
         # If chat with user

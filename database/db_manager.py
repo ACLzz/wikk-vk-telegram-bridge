@@ -26,9 +26,11 @@ def gen_password(length=25):
     return password
 
 
-def dconnect():
+def dconnect(db=None):
     db_info = get_db_info()
-    c = connect(database=db_info['db'], user=db_info['username'], password=db_info['password'],
+    if db is None:
+        db = db_info['db']
+    c = connect(database=db, user=db_info['username'], password=db_info['password'],
                 host=db_info['host'], port=db_info['port'])
     c.autocommit = True
     return c
@@ -39,6 +41,8 @@ def execute(c, query):
     try:
         cur.execute(query)
     except errors.DuplicateDatabase:
+        pass
+    except errors.DuplicateTable:
         pass
     cur.close()
 
@@ -67,13 +71,12 @@ def create_user(username='wikk'):
 
 def create_database():
     if mode == 'dev':
+        c = dconnect(db='wikk')
+    else:
         c = dconnect()
-        execute(c, "create database wikk_logins;")
-        c.close()
-
-    c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
     execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT, peer_id INT);")
+    execute(c, "create table names (oid INT PRIMARY KEY, name VARCHAR(128));")
     c.close()
     print("Database created successfully")
 
@@ -87,10 +90,6 @@ def clear():
         except errors.InvalidCatalogName:
             pass
         try:
-            execute(c, "drop database wikk_logins;")
-        except errors.InvalidCatalogName:
-            pass
-        try:
             execute(c, "drop user wikk;")
         except errors.UndefinedObject:
             pass
@@ -101,6 +100,10 @@ def clear():
             pass
         try:
             execute(c, 'drop table logins;')
+        except errors.UndefinedTable:
+            pass
+        try:
+            execute(c, 'drop table names;')
         except errors.UndefinedTable:
             pass
 

@@ -38,8 +38,6 @@ def stop(signum, frame):
 def start():
     log.info("Initialization...")
 
-    if use_proxy:
-        load_proxies()
     init_handlers()
     init_workers()
 
