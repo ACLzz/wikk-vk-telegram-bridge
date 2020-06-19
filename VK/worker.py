@@ -10,7 +10,7 @@ from datetime import datetime
 from telegram import ChatAction, Bot
 from telegram.error import BadRequest
 
-from requests import post
+from requests import post, exceptions
 import json
 import traceback
 
@@ -35,6 +35,8 @@ def _create_worker(uid):
             worker = Worker(bot, uid)
             worker.start()
             break
+        except exceptions.ReadTimeout:
+            pass
         except Exception as err:
             print("\nWORKER EXITED WITH ERROR:\n")
             print(traceback.format_exc())
@@ -224,7 +226,14 @@ class Worker:
             elif atype == 'link':
                 url = attach['link']['url']
 
+            elif atype == 'graffiti':
+                url = attach['graffiti']['url']
+
+            elif atype == 'sticker':
+                url = attach['sticker']['images'][2]['url']     # 256x256 sticker
+
             else:
+                print(attach)
                 self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
                 self.cleaner()
                 return
@@ -301,6 +310,12 @@ class Worker:
                 if self.attchs_types[i] == 'link':
                     self.attch_link(i)
 
+                if self.attchs_types[i] == 'graffiti':
+                    self.attch_graffiti(i)
+
+                if self.attchs_types[i] == 'sticker':
+                    self.attch_sticker(i)
+
                 i += 1
         else:
             try:
@@ -350,6 +365,12 @@ class Worker:
     def attch_link(self, index):
         text = self.text
         self.bot.send_message(chat_id=self.chat_id, text=text)
+
+    def attch_graffiti(self, index):
+        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[index])
+
+    def attch_sticker(self, index):
+        self.bot.send_photo(chat_id=self.chat_id, photo=self.attchs[index])
 
     def user_online(self, online):
         description = self.bot.get_chat(chat_id=self.chat_id)['description'].split("\no")[0]

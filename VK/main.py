@@ -7,7 +7,8 @@ from telegram_bot.secret import max_convs_per_page
 
 import sys
 from random import randint
-from os import remove
+from os import remove, rename
+from PIL import Image, UnidentifiedImageError
 
 import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -87,7 +88,7 @@ def get_conversations(uid, api=None, offset=0):
     return convs
 
 
-def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None, video=None):
+def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None, voice=None, video=None, sticker=None):
     try:
         session = get_session(uid)
         api = get_api(uid)
@@ -106,7 +107,7 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
         return
 
     attachments = []
-    if photo or documents or audio or voice or video:
+    if photo or documents or audio or voice or video or sticker:
         if photo:
             attach = photo
         elif documents:
@@ -117,11 +118,22 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
             attach = voice
         elif video:
             attach = video
+        elif sticker:
+            attach = sticker
         else:
             attach = None
 
         uploader = VkUpload(session)
         attach_file = attach.get_file().download()
+        if sticker:
+            new_name = attach_file.split('.')[0] + '.png'
+            try:
+                im = Image.open(attach_file).convert("RGBA")
+                im.save(new_name, "png")
+            except UnidentifiedImageError:
+                # Animated sticker
+                return
+            attach_file = new_name
         attach_file = open(attach_file, 'rb')
         file_name = attach_file.name
 
@@ -143,6 +155,11 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
         if video:
             video = uploader.video(attach_file, is_private=True)
             attachments.append(f"video{video['owner_id']}_{video['video_id']}")
+
+        if sticker:
+            upload_response = uploader.graffiti(attach_file, peer_id=vchat_id)
+            graffiti = upload_response['graffiti']
+            attachments.append(f"doc{graffiti['owner_id']}_{graffiti['id']}")
 
         attach_file.close()
         remove(file_name)
