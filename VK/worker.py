@@ -1,3 +1,5 @@
+import logging
+
 from VK.main import get_session, get_vk_info
 from vk_api.longpoll import VkLongPoll, VkEventType
 
@@ -14,6 +16,13 @@ from requests import post, exceptions
 import json
 import traceback
 from os import environ
+
+log_file = 'LOGS.log'
+level = logging.INFO
+handlers = [logging.FileHandler(log_file), logging.StreamHandler()]
+
+logging.basicConfig(level=level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=handlers)
+log = logging
 
 workers = {}
 rebrand_api_key = environ.get("REBRAND")
@@ -39,9 +48,9 @@ def _create_worker(uid):
         except exceptions.ReadTimeout:
             pass
         except Exception as err:
-            print("\nWORKER EXITED WITH ERROR:\n")
-            print(traceback.format_exc())
-            print("RESTARTING WORKER\n")
+            log.error("\nWORKER EXITED WITH ERROR:\n")
+            log.error(traceback.format_exc())
+            log.error("RESTARTING WORKER\n")
 
 
 class Worker:

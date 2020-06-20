@@ -8,8 +8,11 @@ from os import remove, listdir, environ
 
 from signal import signal, SIGINT
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+log_file = 'LOGS.log'
+level = logging.INFO
+handlers = [logging.FileHandler(log_file), logging.StreamHandler()]
+
+logging.basicConfig(level=level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=handlers)
 log = logging
 mode = environ.get("MODE")
 

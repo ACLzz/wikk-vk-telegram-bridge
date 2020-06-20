@@ -1,19 +1,20 @@
+from telegram import error
+
 from wikk_bot.commands import update_group_info
-from database.db import execute
 from wikk_bot.disaptcher import bot as b
+from bot import log
+
+from database.db import execute
+
 from time import sleep
 from datetime import datetime
 import pytz
-import logging
+
 from signal import signal, SIGINT
-from telegram import error
-from multiprocessing import Pool
 from os import environ, listdir, remove, path
+from multiprocessing import Pool
 
 local_tz = pytz.timezone('Europe/Zaporozhye')
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-log = logging
 workers = int(environ.get("POOL_WORKERS"))
 interval = int(environ.get("UPDATE_INTERVAL"))     # in minutes
 

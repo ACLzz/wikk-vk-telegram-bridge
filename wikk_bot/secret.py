@@ -1,4 +1,4 @@
-from json import loads, dumps
+from json import loads
 import os
 from requests import get
 

@@ -5,14 +5,17 @@ from requests.exceptions import ConnectionError
 from database.db import execute
 from wikk_bot.secret import max_convs_per_page
 
-import sys
 from random import randint
-from os import remove, rename
+from os import remove
 from PIL import Image, UnidentifiedImageError
 
 import logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+
+log_file = 'LOGS.log'
+level = logging.INFO
+handlers = [logging.FileHandler(log_file), logging.StreamHandler()]
+
+logging.basicConfig(level=level, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=handlers)
 log = logging
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
