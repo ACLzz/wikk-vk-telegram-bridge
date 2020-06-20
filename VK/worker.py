@@ -176,9 +176,10 @@ class Worker:
             else:
                 self.cont_attchs = False
 
-    def attachments_process(self, message_id):
-        self.extended_message = self.api.messages.getById(message_ids=message_id)['items'][0]
-        attachments_from_msg = self.extended_message['attachments']
+    def attachments_process(self, message_id=None, attachments_from_msg=None):
+        if attachments_from_msg is None:
+            self.extended_message = self.api.messages.getById(message_ids=message_id)['items'][0]
+            attachments_from_msg = self.extended_message['attachments']
 
         if attachments_from_msg:
             self.cont_attchs = True
@@ -271,11 +272,19 @@ class Worker:
         for forward in forwards:
             self.attchs.clear()
             self.cont_attchs = False
+            external = False
             self.text = ">" * i
+            try:
+                self.attachments_process(forward['id'])
+            except KeyError:
+                external = True         # Message from not my chat
+                self.attachments_process(attachments_from_msg=forward['attachments'])
 
-            self.attachments_process(forward['id'])
             self.forwards_root = False
-            vk_id = self.extended_message['from_id']
+            if external:
+                vk_id = forward['from_id']
+            else:
+                vk_id = self.extended_message['from_id']
 
             # Load user name from memory
 
