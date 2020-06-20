@@ -1,6 +1,6 @@
-from telegram_bot.commands import update_group_info
+from wikk_bot.commands import update_group_info
 from database.db import execute
-from telegram_bot.disaptcher import bot as b
+from wikk_bot.disaptcher import bot as b
 from time import sleep
 from datetime import datetime
 import pytz

@@ -3,7 +3,7 @@ from vk_api import VkApi, exceptions, VkUpload
 from requests.exceptions import ConnectionError
 
 from database.db import execute
-from telegram_bot.secret import max_convs_per_page
+from wikk_bot.secret import max_convs_per_page
 
 import sys
 from random import randint
@@ -14,9 +14,6 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 log = logging
-
-sys.path.append('..')
-from telegram_bot.secret import get_proxy, use_proxy
 
 PHONE, PASSWORD, LOGIN, CAPTCHA = range(0, 4)
 oauth_link = "https://rebrand.ly/afvs861"
@@ -71,13 +68,6 @@ def get_session(uid, token=None):
         raise IndexError
 
     session = VkApi(token=token, api_version='5.103')
-
-    if use_proxy:
-        # Add proxy if proxy enabled
-        proxy = get_proxy()
-        session.http.proxies = {"http": f"http://{proxy}",
-                                "https": f"https://{proxy}",
-                                "ftp": f"ftp://{proxy}"}
     return session
 
 

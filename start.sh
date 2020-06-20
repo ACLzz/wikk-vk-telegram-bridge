@@ -1,3 +1,3 @@
-python telegram_bot/update_chats.py &
+pipenv run python update_chats.py &
 echo "\n\n---------- NEW LOG ENTRY `date` ----------\n\n" >> LOGS.log
-python telegram_bot/bot.py >> LOGS.log
+pipenv run python bot.py >> LOGS.log

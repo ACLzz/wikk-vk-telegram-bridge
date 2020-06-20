@@ -1,6 +1,6 @@
 import logging
-from telegram_bot.disaptcher import updater, init_handlers, init_workers
-from telegram_bot.secret import load_proxies, use_proxy, get_token
+from wikk_bot.disaptcher import updater, init_handlers, init_workers
+from wikk_bot.secret import get_token
 from VK.worker import workers
 import psutil
 

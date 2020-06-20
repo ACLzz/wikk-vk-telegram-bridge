@@ -2,7 +2,7 @@ from VK.main import get_session, get_vk_info
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from database.db import execute, get_token
-from telegram_bot.secret import get_token as get_t
+from wikk_bot.secret import get_token as get_t
 
 from multiprocessing import Process
 from datetime import datetime
@@ -13,12 +13,13 @@ from telegram.error import BadRequest
 from requests import post, exceptions
 import json
 import traceback
+from os import environ
 
 workers = {}
-rebrand_api_key = "ac8965f9c18847099b7ea5d6ee3e4220"
+rebrand_api_key = environ.get("REBRAND")
 
 
-def create_worker(bot, uid):
+def create_worker(uid):
     if f'{uid}' in workers:
         return 0
     # Create worker process
@@ -233,7 +234,6 @@ class Worker:
                 url = attach['sticker']['images'][2]['url']     # 256x256 sticker
 
             else:
-                print(attach)
                 self.bot.send_message(chat_id=self.chat_id, text=f"Unsupported attachment '{atype}'.")
                 self.cleaner()
                 return

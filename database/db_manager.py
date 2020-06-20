@@ -7,7 +7,7 @@ from os import environ
 
 sys.path.append("..")
 
-from telegram_bot.secret import get_db_info, write_db_pass
+from wikk_bot.secret import get_db_info
 mode = environ.get("MODE")
 
 
@@ -50,14 +50,15 @@ def execute(c, query):
     cur.close()
 
 
-def create_user(username='wikk'):
-    password = gen_password()
-    write_db_pass(username, password)
+def create_user(username=None):
+    db_info = get_db_info()
+    if username is None:
+        username = db_info['username']
 
     c = dconnect(db='postgres', username='postgres')
 
     try:
-        execute(c, f"CREATE USER {username} WITH ENCRYPTED PASSWORD '{password}';")
+        execute(c, f"CREATE USER {username} WITH ENCRYPTED PASSWORD '{db_info['password']}';")
     except errors.DuplicateObject:
         pass
     try:
@@ -73,10 +74,13 @@ def create_user(username='wikk'):
 
 
 def create_database():
-    if mode == 'dev':
-        c = dconnect(db='wikk', username='wikk')
-    else:
-        c = dconnect()
+    db_info = get_db_info()
+    c = dconnect(username='postgres', db='postgres')
+    execute(c, f"create database {db_info['db']};")
+    execute(c, f"alter database {db_info['db']} owner to {db_info['username']};")
+    c.close()
+
+    c = dconnect()
     execute(c, "create table logins (uid INT PRIMARY KEY, token VARCHAR(85));")
     execute(c, "create table chats (chat_id INT PRIMARY KEY, uid INT REFERENCES logins, vchat_id INT, peer_id INT);")
     execute(c, "create table names (oid INT PRIMARY KEY, name VARCHAR(128));")
@@ -86,14 +90,16 @@ def create_database():
 
 def clear():
     c = dconnect(username='postgres', db='postgres')
+    db_info = get_db_info()
 
     if mode == 'dev':
         try:
-            execute(c, "drop database wikk;")
+            execute(c, f"drop database {db_info['db']};")
+            execute(c, f"drop database {db_info['username']};")
         except errors.InvalidCatalogName:
             pass
         try:
-            execute(c, "drop user wikk;")
+            execute(c, f"drop user {db_info['username']};")
         except errors.UndefinedObject:
             pass
     else:

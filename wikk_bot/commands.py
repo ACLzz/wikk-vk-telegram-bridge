@@ -6,7 +6,7 @@ from telegram.error import BadRequest
 
 from VK.main import oauth_link, login, get_api, get_conversations, send_message, get_vk_info
 from VK.worker import create_worker
-from telegram_bot.secret import max_convs_per_page
+from wikk_bot.secret import max_convs_per_page
 
 from requests import get
 from psycopg2 import errors
@@ -126,7 +126,7 @@ def start_conv(update, context, vk_chat_id):
 
     update_conv(update, context)    # Update conversation information like in VK
 
-    create_worker(context.bot, uid)
+    create_worker(uid)
     context.bot.send_message(chat_id=update.effective_chat.id, text='Good, your chat now is active, '
                                                                     'say hello to your friend)')
 
@@ -235,7 +235,6 @@ def send_msg(update, context):
     voice = update.message.voice
     sticker = update.message.sticker
     chat_id = update.effective_chat.id
-    print(sticker)
 
     if msg is None:
         msg = update.message.caption

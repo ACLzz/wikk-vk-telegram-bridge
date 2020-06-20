@@ -1,2 +1,3 @@
+pipenv install
 cd database
-./db_manager all
+./db_manager.py all
