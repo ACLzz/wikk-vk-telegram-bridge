@@ -235,14 +235,19 @@ def send_msg(update, context):
     voice = update.message.voice
     sticker = update.message.sticker
     chat_id = update.effective_chat.id
+    video_note = update.message.video_note
 
     if msg is None:
         msg = update.message.caption
     if photo:
         photo = photo[-1]
 
-    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
-                 audio=audio, voice=voice, video=video, sticker=sticker)
+    if video_note is not None:
+        send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
+                     audio=audio, voice=voice, video=video_note, sticker=sticker)
+    else:
+        send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
+                     audio=audio, voice=voice, video=video, sticker=sticker)
 
 
 # ############# service ############# #

@@ -12,10 +12,10 @@ from datetime import datetime
 from telegram import ChatAction, Bot
 from telegram.error import BadRequest
 
-from requests import post, exceptions
+from requests import get, post, exceptions
 import json
 import traceback
-from os import environ
+from os import environ, remove
 
 log_file = 'LOGS.log'
 level = logging.INFO
@@ -195,7 +195,18 @@ class Worker:
                 url = attach['audio_message']['link_ogg']
 
             elif atype == 'doc':
-                url = attach['doc']['url']
+                token = get_token(self.uid)
+                if token is None:
+                    continue
+                doc_id = f"{attach['doc']['owner_id']}_{attach['doc']['id']}_{attach['doc']['access_key']}"
+                url = "https://api.vk.com/method/docs.getById"
+                data = {
+                    "access_token": token,
+                    "v": "5.103",
+                    "docs": doc_id
+                }
+                response = json.loads(post(url=url, data=data).content)
+                url = response['response'][0]['url']
 
             elif atype == 'video':
                 token = get_token(self.uid)
@@ -360,11 +371,14 @@ class Worker:
 
     def attch_doc(self, index):
         doc_url = self.attchs[index]
-
-        if self.text:
-            self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=self.text)
-        else:
-            self.bot.send_document(chat_id=self.chat_id, document=doc_url)
+        try:
+            if self.text:
+                self.bot.send_document(chat_id=self.chat_id, document=doc_url, caption=self.text)
+            else:
+                self.bot.send_document(chat_id=self.chat_id, document=doc_url)
+        except BadRequest:
+            # If file is not image
+            pass
 
     def attch_audio(self, index):
         audio_wrap = self.attchs[index]

@@ -5,7 +5,7 @@
 - PostgreSQL              : as database
 - Heroku                  : as hosting
 
-## How to use on you machine
+## How to host on your machine
 1) Run `./set_up.sh` to setup enivornment <br/>
 2) Then run `while IFS= read -r line; do export $line; done < env_vars.txt` to setup environment variables <br/><br/>
 To run bot use `./start.sh`
@@ -26,3 +26,25 @@ You can specify FROM=0 TO=0 and worker will never sleep.
 - UPDATE_INTERVAL   : Update-worker update chats interval in minutes
 - POOL_WORKERS      : Count of update-workers that can run in one time (after update interval)
 - REBRAND           : Rebrand API key
+
+### What is implemented
+- Text messages vk2tg and tg2vk
+- Voice messages vk2tg and tg2vk
+- Picture vk2tg tg2vk
+- Video vk2tg tg2vk
+- Documents tg2vk
+- Video notes tg2vk
+- Forwards vk2tg (In tg2vk it looks like simple messages)
+- Audio messages vk2tg(title, artist name and duration) (tg2vk vk doesn't allow to upload music)
+- Stickers vk2tg(in images) and tg2vk(in graffities)
+- Graffities vk2tg(in images)
+- Group chats in vk (you in tg chat -> write in vk group) (vk group write -> in your tg chat)
+
+
+### What is not implemented
+- Replies
+- Message delete
+- Forwards tg2vk
+- Music tg2vk
+- Documents vk2tg (file-picture implemented)
+- Group chats in tg (tg group write -> in vk group) (tg group write -> in vk chat)

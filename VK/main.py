@@ -135,6 +135,13 @@ def send_message(uid, chat_id, msg=None, photo=None, documents=None, audio=None,
             for file in upload_response:
                 attachments.append(f"photo{file['owner_id']}_{file['id']}")
 
+        if audio:
+            _msg = "VK doesn't allow to upload music."
+            if msg is None:
+                msg = _msg
+            else:
+                msg += "\n" + _msg
+
         if voice:
             upload_response = uploader.audio_message(audio=attach_file, peer_id=vchat_id)
             audio = upload_response['audio_message']

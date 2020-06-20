@@ -1,0 +1,1053 @@
+2020-06-20 19:29:31,632 - root - INFO - Initialization...
+2020-06-20 19:29:31,650 - root - INFO - Initialized. Starting polling
+2020-06-20 19:29:32,154 - root - INFO - Polling started
+2020-06-20 19:29:36,338 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:36,340 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:42,019 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:42,020 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:42,365 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 19:29:42,413 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/util/connection.py", line 61, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/usr/lib/python3.8/socket.py", line 918, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connectionpool.py", line 976, in _validate_conn
+    conn.connect()
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connection.py", line 308, in connect
+    conn = self._new_conn()
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x7effb3fbc880>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/connectionpool.py", line 724, in urlopen
+    retries = retries.increment(
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/urllib3/util/retry.py", line 439, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.vk.me', port=443): Max retries exceeded with url: /ruim197871160?act=a_check&key=96f78d86d625660f21dbc60ff1d65ac517bcc36c&ts=1694263308&wait=25&mode=2&version=3 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7effb3fbc880>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 85, in start
+    for self.event in self.poll.listen():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/longpoll.py", line 621, in listen
+    for event in self.check():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/longpoll.py", line 557, in check
+    response = self.session.get(
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/requests/sessions.py", line 543, in get
+    return self.request('GET', url, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.vk.me', port=443): Max retries exceeded with url: /ruim197871160?act=a_check&key=96f78d86d625660f21dbc60ff1d65ac517bcc36c&ts=1694263308&wait=25&mode=2&version=3 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7effb3fbc880>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+
+2020-06-20 19:29:42,413 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 19:29:47,646 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:47,647 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:54,523 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:29:54,524 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:03,272 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:03,273 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:11,845 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:11,846 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:25,031 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:25,031 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:40,554 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:30:40,555 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:31:01,776 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:31:01,778 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:31:31,553 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:31:31,554 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:32:14,164 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:32:14,165 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:32:52,954 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:32:52,955 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:33:27,817 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:33:27,819 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:34:02,029 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:34:02,031 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:34:36,187 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:34:36,188 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:35:10,338 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:35:10,339 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:35:44,492 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:35:44,493 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:36:18,643 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:36:18,644 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:36:52,793 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:36:52,794 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:37:26,946 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:37:26,948 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:38:01,098 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:38:01,099 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:38:35,247 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:38:35,248 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:39:09,401 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:39:09,403 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:39:43,553 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:39:43,555 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:39:51,334 - root - INFO - Shutting down bot...
+2020-06-20 19:39:51,334 - root - INFO - Shutting down bot...
+2020-06-20 19:39:51,334 - root - INFO - Shutting down bot...
+2020-06-20 19:39:51,388 - root - INFO - Workers stopped
+2020-06-20 19:39:51,389 - root - INFO - All unsent files cleaned
+2020-06-20 19:40:10,966 - root - INFO - Initialization...
+2020-06-20 19:40:10,979 - root - INFO - Initialized. Starting polling
+2020-06-20 19:40:11,345 - root - INFO - Polling started
+2020-06-20 19:40:27,651 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 19:40:27,656 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 93, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 325, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 378, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=doc_url)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 245, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Failed to get http url content
+
+2020-06-20 19:40:27,656 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 19:40:52,024 - root - INFO - Shutting down bot...
+2020-06-20 19:40:52,025 - root - INFO - Shutting down bot...
+2020-06-20 19:40:52,024 - root - INFO - Shutting down bot...
+2020-06-20 19:40:52,043 - root - INFO - Workers stopped
+2020-06-20 19:40:52,043 - root - INFO - All unsent files cleaned
+2020-06-20 19:40:59,408 - root - INFO - Stopped.
+2020-06-20 19:41:02,875 - root - INFO - Initialization...
+2020-06-20 19:41:02,898 - root - INFO - Initialized. Starting polling
+2020-06-20 19:41:03,263 - root - INFO - Polling started
+2020-06-20 19:42:53,927 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 19:42:53,933 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 93, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 325, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 378, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=doc_url)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 245, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Failed to get http url content
+
+2020-06-20 19:42:53,934 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 19:43:01,733 - root - INFO - Shutting down bot...
+2020-06-20 19:43:01,734 - root - INFO - Shutting down bot...
+2020-06-20 19:43:01,734 - root - INFO - Shutting down bot...
+2020-06-20 19:43:01,759 - root - INFO - Workers stopped
+2020-06-20 19:43:01,759 - root - INFO - All unsent files cleaned
+2020-06-20 19:43:02,673 - root - INFO - Stopped.
+2020-06-20 19:48:37,977 - root - INFO - Initialization...
+2020-06-20 19:48:37,998 - root - INFO - Initialized. Starting polling
+2020-06-20 19:48:38,367 - root - INFO - Polling started
+2020-06-20 19:48:42,543 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:48:42,544 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:48:48,171 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:48:48,172 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:48:55,046 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:48:55,048 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:49:00,797 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:49:00,798 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:49:09,501 - telegram.ext.updater - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:49:09,502 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 380, in _network_loop_retry
+    if not action_cb():
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/updater.py", line 338, in polling_action_cb
+    updates = self.bot.get_updates(self.last_update_id,
+  File "<decorator-gen-31>", line 2, in get_updates
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 2136, in get_updates
+    result = self._request.post(url, data, timeout=float(read_latency) + float(timeout))
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 249, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2020-06-20 19:49:18,977 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 343, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/handler.py", line 119, in handle_update
+    return self.callback(update, context)
+  File "/home/claes/PycharmProjects/social-bridge/wikk_bot/commands.py", line 249, in send_msg
+    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
+  File "/home/claes/PycharmProjects/social-bridge/VK/main.py", line 151, in send_message
+    upload_response = uploader.document_message(attach_file, peer_id=vchat_id)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/upload.py", line 437, in document_message
+    return self.document(doc, title, tags, message_peer_id=peer_id)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/upload.py", line 413, in document
+    return self.vk.docs.save(**response)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/vk_api.py", line 681, in __call__
+    return self._vk.method(self._method, kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/vk_api.py", line 646, in method
+    raise error
+vk_api.exceptions.ApiError: [100] One of the parameters specified was missing or invalid: file is undefined
+2020-06-20 19:49:21,809 - root - INFO - Shutting down bot...
+2020-06-20 19:49:21,809 - root - INFO - Shutting down bot...
+2020-06-20 19:49:21,809 - root - INFO - Shutting down bot...
+2020-06-20 19:49:21,858 - root - INFO - Workers stopped
+2020-06-20 19:49:21,858 - root - INFO - All unsent files cleaned
+2020-06-20 19:49:28,452 - root - INFO - Initialization...
+2020-06-20 19:49:28,475 - root - INFO - Initialized. Starting polling
+2020-06-20 19:49:28,841 - root - INFO - Polling started
+2020-06-20 19:49:42,019 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 343, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/handler.py", line 119, in handle_update
+    return self.callback(update, context)
+  File "/home/claes/PycharmProjects/social-bridge/wikk_bot/commands.py", line 249, in send_msg
+    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
+  File "/home/claes/PycharmProjects/social-bridge/VK/main.py", line 151, in send_message
+    upload_response = uploader.document_message(attach_file, peer_id=vchat_id)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/upload.py", line 437, in document_message
+    return self.document(doc, title, tags, message_peer_id=peer_id)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/upload.py", line 413, in document
+    return self.vk.docs.save(**response)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/vk_api.py", line 681, in __call__
+    return self._vk.method(self._method, kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/vk_api/vk_api.py", line 646, in method
+    raise error
+vk_api.exceptions.ApiError: [100] One of the parameters specified was missing or invalid: file is undefined
+2020-06-20 19:51:03,773 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 19:51:03,778 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 93, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 325, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 378, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=doc_url)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 245, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Wrong file identifier/http url specified
+
+2020-06-20 19:51:03,778 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 19:53:02,087 - root - INFO - Shutting down bot...
+2020-06-20 19:53:02,087 - root - INFO - Shutting down bot...
+2020-06-20 19:53:02,087 - root - INFO - Shutting down bot...
+2020-06-20 19:53:02,109 - root - INFO - Workers stopped
+2020-06-20 19:53:02,110 - root - INFO - All unsent files cleaned
+2020-06-20 19:53:05,074 - root - INFO - Stopped.
+2020-06-20 19:53:06,772 - root - INFO - Initialization...
+2020-06-20 19:53:06,815 - root - INFO - Initialized. Starting polling
+2020-06-20 19:53:07,204 - root - INFO - Polling started
+2020-06-20 20:00:38,227 - root - INFO - Shutting down bot...
+2020-06-20 20:00:38,227 - root - INFO - Shutting down bot...
+2020-06-20 20:00:38,251 - root - INFO - Workers stopped
+2020-06-20 20:00:38,251 - root - INFO - All unsent files cleaned
+2020-06-20 20:00:41,814 - root - INFO - Initialization...
+2020-06-20 20:00:41,837 - root - INFO - Initialized. Starting polling
+2020-06-20 20:00:42,267 - root - INFO - Polling started
+2020-06-20 20:01:38,145 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 20:01:38,159 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 46, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 65, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 94, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 326, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 384, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=filename)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 245, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Wrong remote file identifier specified: wrong padding in the string
+
+2020-06-20 20:01:38,161 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 20:05:29,939 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 20:05:29,948 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 46, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 65, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 94, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 326, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 384, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=filename)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 245, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Wrong remote file identifier specified: wrong padding in the string
+
+2020-06-20 20:05:29,948 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 20:16:14,092 - root - INFO - Shutting down bot...
+2020-06-20 20:16:14,093 - root - INFO - Shutting down bot...
+2020-06-20 20:16:14,093 - root - INFO - Shutting down bot...
+2020-06-20 20:16:14,126 - root - INFO - Workers stopped
+2020-06-20 20:16:14,127 - root - INFO - All unsent files cleaned
+2020-06-20 20:16:15,817 - root - INFO - Stopped.
+2020-06-20 20:16:17,505 - root - INFO - Initialization...
+2020-06-20 20:16:17,527 - root - INFO - Initialized. Starting polling
+2020-06-20 20:16:17,866 - root - INFO - Polling started
+2020-06-20 20:36:42,727 - telegram.vendor.ptb_urllib3.urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None)) after connection broken by 'NewConnectionError('<telegram.vendor.ptb_urllib3.urllib3.connection.VerifiedHTTPSConnection object at 0x7f3d081d9b50>: Failed to establish a new connection: [Errno 101] Network is unreachable')': /bot1190035253:AAHGptDpPjUJH-zOsAit_rb9ILOMgVs9etM/getUpdates
+2020-06-20 20:38:39,061 - root - INFO - Shutting down bot...
+2020-06-20 20:38:39,061 - root - INFO - Shutting down bot...
+2020-06-20 20:38:39,061 - root - INFO - Shutting down bot...
+2020-06-20 20:38:39,085 - root - INFO - Workers stopped
+2020-06-20 20:38:39,085 - root - INFO - All unsent files cleaned
+2020-06-20 20:38:43,187 - root - INFO - Initialization...
+2020-06-20 20:38:43,212 - root - INFO - Initialized. Starting polling
+2020-06-20 20:38:43,671 - root - INFO - Polling started
+2020-06-20 20:43:43,376 - root - INFO - Shutting down bot...
+2020-06-20 20:43:43,376 - root - INFO - Shutting down bot...
+2020-06-20 20:43:43,376 - root - INFO - Shutting down bot...
+2020-06-20 20:43:43,429 - root - INFO - Workers stopped
+2020-06-20 20:43:43,430 - root - INFO - All unsent files cleaned
+2020-06-20 20:43:46,134 - root - INFO - Initialization...
+2020-06-20 20:43:46,158 - root - INFO - Initialized. Starting polling
+2020-06-20 20:43:46,612 - root - INFO - Polling started
+2020-06-20 20:44:05,498 - telegram.ext.dispatcher - ERROR - No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 402, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 398, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.8/http/client.py", line 1332, in getresponse
+    response.begin()
+  File "/usr/lib/python3.8/http/client.py", line 303, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.8/http/client.py", line 264, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.8/socket.py", line 669, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.8/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.8/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 225, in _request_wrapper
+    resp = self._con_pool.request(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 68, in request
+    return self.request_encode_body(method, url, fields=fields,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 148, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/poolmanager.py", line 244, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 665, in urlopen
+    retries = retries.increment(method, url, error=e, _pool=self,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/util/retry.py", line 347, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 614, in urlopen
+    httplib_response = self._make_request(conn, method, url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 404, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 321, in _raise_timeout
+    raise exc_cls(*args)
+telegram.vendor.ptb_urllib3.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=5.0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/dispatcher.py", line 343, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/ext/handler.py", line 119, in handle_update
+    return self.callback(update, context)
+  File "/home/claes/PycharmProjects/social-bridge/wikk_bot/commands.py", line 249, in send_msg
+    send_message(uid, chat_id, msg=msg, photo=photo, documents=documents,
+  File "/home/claes/PycharmProjects/social-bridge/VK/main.py", line 120, in send_message
+    attach_file = attach.get_file().download()
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/files/document.py", line 101, in get_file
+    return self.bot.get_file(self.file_id, timeout=timeout, **kwargs)
+  File "<decorator-gen-23>", line 2, in get_file
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 1696, in get_file
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 227, in _request_wrapper
+    raise TimedOut()
+telegram.error.TimedOut: Timed out
+2020-06-20 20:44:58,200 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 20:44:58,218 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 402, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 398, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.8/http/client.py", line 1332, in getresponse
+    response.begin()
+  File "/usr/lib/python3.8/http/client.py", line 303, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.8/http/client.py", line 264, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.8/socket.py", line 669, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.8/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.8/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 225, in _request_wrapper
+    resp = self._con_pool.request(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 68, in request
+    return self.request_encode_body(method, url, fields=fields,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 148, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/poolmanager.py", line 244, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 665, in urlopen
+    retries = retries.increment(method, url, error=e, _pool=self,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/util/retry.py", line 347, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 614, in urlopen
+    httplib_response = self._make_request(conn, method, url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 404, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 321, in _raise_timeout
+    raise exc_cls(*args)
+telegram.vendor.ptb_urllib3.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=20)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 94, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 327, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 384, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=filename)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 227, in _request_wrapper
+    raise TimedOut()
+telegram.error.TimedOut: Timed out
+
+2020-06-20 20:44:58,219 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 20:46:09,686 - root - INFO - Shutting down bot...
+2020-06-20 20:46:09,687 - root - INFO - Shutting down bot...
+2020-06-20 20:46:09,687 - root - INFO - Shutting down bot...
+2020-06-20 20:46:09,720 - root - INFO - Workers stopped
+2020-06-20 20:46:09,721 - root - INFO - All unsent files cleaned
+2020-06-20 20:46:12,061 - root - INFO - Initialization...
+2020-06-20 20:46:12,078 - root - INFO - Initialized. Starting polling
+2020-06-20 20:46:13,552 - root - INFO - Polling started
+2020-06-20 20:46:56,733 - root - ERROR - 
+WORKER EXITED WITH ERROR:
+
+2020-06-20 20:46:56,739 - root - ERROR - Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 402, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 398, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.8/http/client.py", line 1332, in getresponse
+    response.begin()
+  File "/usr/lib/python3.8/http/client.py", line 303, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.8/http/client.py", line 264, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.8/socket.py", line 669, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.8/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.8/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 225, in _request_wrapper
+    resp = self._con_pool.request(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 68, in request
+    return self.request_encode_body(method, url, fields=fields,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/request.py", line 148, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/poolmanager.py", line 244, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 665, in urlopen
+    retries = retries.increment(method, url, error=e, _pool=self,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/util/retry.py", line 347, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 614, in urlopen
+    httplib_response = self._make_request(conn, method, url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 404, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/vendor/ptb_urllib3/urllib3/connectionpool.py", line 321, in _raise_timeout
+    raise exc_cls(*args)
+telegram.vendor.ptb_urllib3.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.telegram.org', port=443): Read timed out. (read timeout=20)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 45, in _create_worker
+    worker = Worker(bot, uid)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 64, in __init__
+    self.start()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 94, in start
+    self.new_message()
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 327, in new_message
+    self.attch_doc(i)
+  File "/home/claes/PycharmProjects/social-bridge/VK/worker.py", line 384, in attch_doc
+    self.bot.send_document(chat_id=self.chat_id, document=filename)
+  File "<decorator-gen-7>", line 2, in send_document
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 70, in decorator
+    result = func(*args, **kwargs)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 672, in send_document
+    return self._message(url, data, timeout=timeout, disable_notification=disable_notification,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/bot.py", line 178, in _message
+    result = self._request.post(url, data, timeout=timeout)
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 331, in post
+    result = self._request_wrapper('POST', url,
+  File "/home/claes/.local/share/virtualenvs/social-bridge--bpu4OdL/lib/python3.8/site-packages/telegram/utils/request.py", line 227, in _request_wrapper
+    raise TimedOut()
+telegram.error.TimedOut: Timed out
+
+2020-06-20 20:46:56,739 - root - ERROR - RESTARTING WORKER
+
+2020-06-20 20:49:05,568 - root - INFO - Shutting down bot...
+2020-06-20 20:49:05,568 - root - INFO - Shutting down bot...
+2020-06-20 20:49:05,568 - root - INFO - Shutting down bot...
+2020-06-20 20:49:05,586 - root - INFO - Workers stopped
+2020-06-20 20:49:05,586 - root - INFO - All unsent files cleaned
+2020-06-20 20:49:06,192 - root - INFO - Stopped.
