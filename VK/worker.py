@@ -8,14 +8,15 @@ from wikk_bot.secret import get_token as get_t
 
 from multiprocessing import Process
 from datetime import datetime
+from time import sleep
 
 from telegram import ChatAction, Bot
 from telegram.error import BadRequest
 
-from requests import get, post, exceptions
+from requests import post, exceptions
 import json
 import traceback
-from os import environ, remove
+from os import environ
 
 log_file = 'LOGS.log'
 level = logging.INFO
@@ -272,26 +273,18 @@ class Worker:
         for forward in forwards:
             self.attchs.clear()
             self.cont_attchs = False
-            external = False
             self.text = ">" * i
-            try:
-                self.attachments_process(forward['id'])
-            except KeyError:
-                external = True         # Message from not my chat
+            if forward['attachments']:
                 self.attachments_process(attachments_from_msg=forward['attachments'])
 
             self.forwards_root = False
-            if external:
-                vk_id = forward['from_id']
-            else:
-                vk_id = self.extended_message['from_id']
-
-            # Load user name from memory
+            vk_id = forward['from_id']
 
             vk_obj = get_vk_info(uid=self.uid, vk_chat_id=vk_id)
-            # If user
+            # If user in db
             if isinstance(vk_obj, str):
                 name = vk_obj
+            # If user
             elif 2000000000 > vk_id > 0:
                 name = f" {vk_obj['first_name']} {vk_obj['last_name']}"
             # If chat
@@ -313,6 +306,7 @@ class Worker:
             self.new_message()
 
             try:
+                sleep(1.5)
                 self.forwards_process(forward['fwd_messages'], i)
             except KeyError:
                 pass
