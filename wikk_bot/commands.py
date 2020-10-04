@@ -85,6 +85,8 @@ def list_convs(update, context, page=1, prev=False):
         else:
             name = 'Unknown'
 
+        name = name.replace('\'', '').replace('-', '')
+
         # Add name of vk object into database
         query = f"insert into names (oid, name) values ({oid}, '{name}') on conflict do nothing;"
         execute(query)

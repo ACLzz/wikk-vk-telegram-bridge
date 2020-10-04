@@ -52,6 +52,15 @@ def init_handlers():
 
 
 def init_workers():
-    conversations = execute("select distinct uid from chats;")
+    all_conversations = execute("select distinct uid from chats;")
+    conversations = []
+
+    for uid in all_conversations:
+        token = execute(f"select token from logins where uid = {uid[0]}")
+
+        if token[0][0] is None:
+            continue
+        conversations.append(uid)
+
     for uid in conversations:
         create_worker(uid[0])

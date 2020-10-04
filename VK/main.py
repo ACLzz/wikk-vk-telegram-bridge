@@ -41,7 +41,7 @@ def login(uid, token, bot):
         for chat in chats:
             bot.send_message(chat_id=chat[0], text="This chat has been deactivated because"
                                                    " you've logout from your account.\nUse /lc to choose new one")
-    execute(f"delete from chats where uid = {uid} and vchat_id != 0;")
+    execute(f"delete from chats where uid = {uid};")
 
     execute(f"update logins set token = '{token}' where uid = {uid}")
     # Adding api object to memory
