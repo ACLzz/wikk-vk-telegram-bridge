@@ -1,8 +1,11 @@
 # wikk-vk-telegram-bot
 This repo won't be maintained and author doesn't support usage of VKontakte.
+
 VKontakte is a russian social network, I stand with Ukraine 🇺🇦 and want to make you aware that using 
 this social network directly or indirectly supports russian propaganda and monetize warcrimes against
-civilians in Ukraine. I strongly discourage you to use it. Support Ukraine and Slava Ukraini!
+civilians in Ukraine. 
+
+I strongly discourage you to use it. Support Ukraine and Slava Ukraini!
 
 ## Used technologies:
 - python-telegram-bot-api : as telegram bot API base
